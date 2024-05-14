@@ -2,17 +2,55 @@ body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
+    background-color: #E1EDF6 !important;
 }
+/* Menu */
+.nav {
+    background-color: #180876;
+    padding: 20px 0;
+  }
 
-.container {
-    width: 200px;
-    margin: 0 auto;
+  .nav-link {
+    color: white !important;
+  }
+
+/* Contenido */
+.inicio {
+    width: 45%;
+    margin: 1%;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     text-align: center;
+    float: left;
 }
+.separador{
+    float: left;
+    width: .5%;
+    background-color: #6DADD1;
+    height: 350px;
+}
+.registro{
+    width: 45%;
+    float: left;    
+    margin: 1%;
+    text-align: center;
+    padding: 50px;
 
+}
+.registro h4{
+    color: #197DC9;
+}
+.registro a{
+    text-decoration: none;
+    border: 1px solid;
+    border-radius: 25px;
+    margin: 10px;
+    padding: 10px;
+    background-color: #2700A8;
+    color: #fff;
+    
+}
 h1 {
     margin-bottom: 20px;
 }
@@ -31,20 +69,10 @@ input[type="email"],
 input[type="password"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 1px solid #197DC9;
+    border-radius: 50px;
     margin-bottom: 10px;
+    text-align: center;
 }
 
-.nav {
-    background-color: #05002e;
-    padding: 20px 0;
-  }
 
-  .nav-link {
-    color: white;
-  }
-
-  body {
-    background-color: rgb(159, 161, 255);
-  }
