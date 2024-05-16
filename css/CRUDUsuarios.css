@@ -8,15 +8,17 @@ body {
 .nav {
     background-color: #180876;
     padding: 20px 0;
+    width: 100% !important;
   }
 
   .nav-link {
     color: white !important;
   }
+/* tabla */
 table{
     text-align: center;
     width: 90% !important;
-    margin: 5%;
+    margin: 20px 5%;
 }
 table tr th{
     background-color:#99ACFF !important;
@@ -33,4 +35,16 @@ table tr td{
     background-color: #FF0000;
     padding: 5px;
     border-radius: 10px;
+}
+.btnAgregar{
+    background-color: #42FF00;
+    padding: 10px;
+    margin: 10px;
+    text-decoration: none;
+    color: #000;
+    border-radius: 10px;
+}
+h2{
+    text-align: center;
+    margin: 20px !important;
 }

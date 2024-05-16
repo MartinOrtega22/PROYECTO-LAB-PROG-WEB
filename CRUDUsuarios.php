@@ -1,5 +1,5 @@
 
-<?php
+        <?php
             // Variables base de datos
             $host = "localhost";
             $usuario = "root"; 
@@ -21,7 +21,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sucursales</title>
+    <title>Usuarios</title>
     <link rel="stylesheet" href="css/CRUDUsuarios.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -29,8 +29,6 @@
 
 </head>
 <body>
-        
-    <div class="container">
         <ul class="nav justify-content-end">
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Productos</a>
@@ -48,8 +46,15 @@
                 <a class="nav-link" href="#"><i class="bi bi-person-circle"></i></i></a>
             </li>
         </ul>
+    
+        <div class="container">
+        
+        
+        <h2>Lista de Usuarios</h2>        
+        <input type="text">
+        <button>Buscar</button>
 
-        <a href="agregar.php">Agregar Usuario</a>
+        <a href="agregar.php" class="btnAgregar">Agregar</a>
         <table class="table">
             <tr>
             <th>ID</th>
