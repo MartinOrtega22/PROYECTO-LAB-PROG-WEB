@@ -1,0 +1,73 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #E1EDF6 !important;
+}
+
+/* Menu */
+.nav {
+    background-color: #180876;
+    padding: 20px 0;
+    width: 100% !important;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+/* tabla */
+table {
+    text-align: center;
+    width: 90% !important;
+    margin: 20px 5%;
+}
+
+table tr th {
+    background-color: #99ACFF !important;
+}
+
+table tr td {
+    background-color: #CDD6FF !important;
+}
+
+#btnEditar {
+    background-color: #0075FF;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+#btnEliminar {
+    background-color: #FF0000;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.btnAgregar {
+    background-color: #42FF00;
+    padding: 10px;
+    margin: 10px;
+    text-decoration: none;
+    color: #000;
+    border-radius: 10px;
+}
+
+h2 {
+    text-align: center;
+    margin: 20px !important;
+}
+
+#product-search {
+    width: 30%;
+    max-width: 180px;
+}
+
+#fecha-inicio {
+    width: 30%;
+    max-width: 120px;
+}
+
+#fecha-fin {
+    width: 30%;
+    max-width: 120px;
+}
