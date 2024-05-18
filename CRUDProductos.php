@@ -58,7 +58,7 @@ if ($conn->connect_error) {
         <input type="text">
         <button type="button" class="btn btn-primary">Buscar</button>
 
-        <a href="agregar.php" class="btnAgregar">Agregar</a>
+        <a href="agregar.php" class="btnAgregar">Agregar productos</a>
         <table class="table">
             <tr>
                 <th>ID</th>
