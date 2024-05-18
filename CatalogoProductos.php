@@ -34,6 +34,12 @@
             </li>
         </ul>
 
+        <br>
+        <h2 style="text-align: center">Catálogo de productos</h2>
+        <input type="text">
+        <button type="button" class="btn btn-primary">Buscar</button>
+
+
         <?php
         // Configuración de la conexión a la base de datos
         $host = "localhost";
@@ -59,9 +65,9 @@
         if (mysqli_num_rows($resultado) > 0) {
             echo '<div class="row row-cols-3">';
             while ($producto = mysqli_fetch_assoc($resultado)) {
-                echo '<div class="col mb-4">';
+                echo '<div class="col mb-4 mt-4">';
                 echo '<div class="card">';
-                echo '<img src="' . $producto['ImagenProducto'] . '" class="card-img-top" alt="' . $producto['NombreProducto'] . '">';
+                echo '<img src="data:image/jpeg;base64,' . base64_encode($producto['ImagenProducto']) . '" class="card-img-top" alt="' . $producto['NombreProducto'] . '">';
                 echo '<div class="card-body">';
                 echo '<h5 class="card-title">' . $producto['NombreProducto'] . '</h5>';
                 echo '<p class="card-text">' . $producto['DescripcionProducto'] . '</p>';
@@ -80,7 +86,7 @@
         ?>
     </div>
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>

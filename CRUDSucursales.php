@@ -8,7 +8,7 @@ $bd = "farmacia";
 // Conexión
 $conn = new mysqli($host, $usuario, $contra, $bd);
 
-// VerificA conexión
+// Verificar conexión
 if ($conn->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
@@ -52,14 +52,55 @@ if ($conn->connect_error) {
     </ul>
 
     <div class="container">
-
-
-        <h2>Sucursales</h2>
+        <h2>Lista de sucursales</h2>
         <input type="text">
         <button type="button" class="btn btn-primary">Buscar</button>
 
+        <!-- Botón para abrir el modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarSucursalModal">
+            Agregar
+        </button>
 
-        <a href="agregar.php" class="btnAgregar">Agregar</a>
+        <!-- Modal -->
+        <div class="modal fade" id="agregarSucursalModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar Sucursal</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formAgregarSucursal" action="accionphp/agregarsucursal.php" method="post"
+                            enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="idSucursal" class="form-label">ID Sucursal</label>
+                                <input type="text" class="form-control" id="idSucursal" name="idSucursal" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="nombreSucursal" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombreSucursal" name="nombreSucursal"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="direccionSucursal" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" id="direccionSucursal"
+                                    name="direccionSucursal" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="telefonoSucursal" class="form-label">Teléfono</label>
+                                <input type="number" class="form-control" id="telefonoSucursal" name="telefonoSucursal"
+                                    required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" form="formAgregarSucursal">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <table class="table">
             <tr>
                 <th>ID</th>
@@ -83,18 +124,37 @@ if ($conn->connect_error) {
                     echo "</tr>";
                 }
             } else {
-                echo "0 resultados";
+                echo "<tr><td colspan='7'>No se encontraron resultados</td></tr>";
+
             }
             $conn->close();
             ?>
         </table>
-
-
-
     </div>
+
+
+    <?php if (isset($_GET['success'])): ?>
+        <div class="alert alert-success text-center" role="alert"
+            style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1050;">
+            Sucursal agregada correctamente.
+        </div>
+        <script>
+            setTimeout(() => {
+                document.querySelector('.alert').remove();
+            }, 3000);
+        </script>
+    <?php endif; ?>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+    <script>
+        // Limpiar el formulario cuando se cierra el modal
+        document.getElementById('agregarSucursalModal').addEventListener('hidden.bs.modal', function () {
+            document.getElementById('formAgregarSucursal').reset();
+        });
+    </script>
 </body>
 
 </html>
