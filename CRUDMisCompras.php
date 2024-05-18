@@ -83,22 +83,22 @@ if ($conn->connect_error) {
                 $fechaFin = $_GET['fecha-fin'];
 
                 // Consultar SQL para obtener pedidos con los filtros
-                $sql = "SELECT * FROM farmacia venta 
-                        JOIN farmacia usuario ON farmacia venta.IdUsuario = farmacia usuario.IdUsuario
-                        JOIN farmacia sucursal ON farmacia venta.IdSucursal = farmacia sucursal.IdSucursal
-                        JOIN farmacia estatusventa ON farmacia venta.IdEstatusVenta = farmacia estatusventa.IdEstatus
-                        WHERE farmacia venta.FechaVenta";
+                $sql = "SELECT * FROM venta 
+                        JOIN usuario ON venta.IdUsuario = usuario.IdUsuario
+                        JOIN sucursal ON venta.IdSucursal = sucursal.IdSucursal
+                        JOIN estatusventa ON venta.IdEstatusVenta = estatusventa.IdEstatus
+                        WHERE venta.FechaVenta";
 
-                $sql = "SELECT * FROM farmacia venta 
-            JOIN farmacia usuario ON farmacia venta.IdUsuario = farmacia usuario.IdUsuario
-            JOIN farmacia sucursal ON farmacia venta.IdSucursal = farmacia sucursal.IdSucursal
-            JOIN farmacia estatusventa ON farmacia venta.IdEstatusVenta = farmacia estatusventa.IdEstatus
-            WHERE farmacia venta.FechaVenta BETWEEN '$fechaInicio' AND '$fechaFin'";
+                $sql = "SELECT * FROM venta 
+            JOIN usuario ON venta.IdUsuario = usuario.IdUsuario
+            JOIN sucursal ON venta.IdSucursal = sucursal.IdSucursal
+            JOIN estatusventa ON venta.IdEstatusVenta = estatusventa.IdEstatus
+            WHERE venta.FechaVenta BETWEEN '$fechaInicio' AND '$fechaFin'";
             } else {
-                $sql = "SELECT * FROM farmacia venta 
-            JOIN farmacia usuario ON farmacia venta.IdUsuario = farmacia usuario.IdUsuario
-            JOIN farmacia sucursal ON farmacia venta.IdSucursal = farmacia sucursal.IdSucursal
-            JOIN farmacia estatusventa ON farmacia venta.IdEstatusVenta = farmacia estatusventa.IdEstatus";
+                $sql = "SELECT * FROM venta 
+            JOIN usuario ON venta.IdUsuario = usuario.IdUsuario
+            JOIN sucursal ON venta.IdSucursal = sucursal.IdSucursal
+            JOIN estatusventa ON venta.IdEstatusVenta = estatusventa.IdEstatus";
             }
 
             $result = $db->query($sql);

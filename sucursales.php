@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,13 +10,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
 
 </head>
-
 <body>
-    <div class="container">
-        <ul class="nav justify-content-end">
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="#">Sucursales</a>
-            </li>
+<ul class="nav justify-content-end">
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">Productos</a>
             </li>
@@ -35,48 +29,58 @@
             </li>
         </ul>
 
+    <div class="container">        
         <?php
-        // Configuración de la conexión a la base de datos
-        $host = "localhost";
-        $usuario = "root";
-        $contra = "megustaelcereal";
-        $bd = "farmacia";
+            // Configuración de la conexión a la base de datos
+            $host = "localhost";
+            $usuario = "root"; 
+            $contra = "12345678"; 
+            $bd = "farmacia"; 
 
-        // Conexión
-        $conn = new mysqli($host, $usuario, $contra, $bd);
+            // Conexión
+            $conn = new mysqli($host, $usuario, $contra, $bd);
 
-        // VerificA conexión
-        if ($conn->connect_error) {
-            die("Error de conexión: " . $conn->connect_error);
-        }
+            // VerificA conexión
+            if ($conn->connect_error) {
+                die("Error de conexión: " . $conn->connect_error);
+            }
         ?>
+        <div class="row">
 
         <?php
         // consulta
-        $sql = "SELECT NombreSucursal, DireccionSucursal, TelefonoSucursal FROM sucursal";
-        $resultado = $conn->query($sql);
+            $sql = "SELECT NombreSucursal, DireccionSucursal, TelefonoSucursal FROM sucursal";
+            $resultado = $conn->query($sql);
+
+    
+            if ($resultado->num_rows > 0) {
+        // Por cada resulatado te muestra una card
+                while ($fila = $resultado->fetch_assoc()) {
+                    echo '<div class="col-lg-5 col-md-12 col-sm-12 m-4">';
+                    echo '<div class="card h-100 text-center">';
+                    echo '<div class="card-header">';
+                    echo 'Sucursal';
+                    echo '</div>';
+                    echo '<div class="card-body">';                    
+                    echo '<h2>' . $fila['NombreSucursal'] . '</h2>';
+                    echo '<p><strong>Dirección:</strong> ' . $fila['DireccionSucursal'] . '</p>';
+                    echo '<p><strong>Teléfono:</strong> ' . $fila['TelefonoSucursal'] . '</p>';
+                    echo '</div>';
+                    echo '</div>';
+                    echo '</div>';
 
 
-        if ($resultado->num_rows > 0) {
-            // Por cada resulatado te muestra una card
-            while ($fila = $resultado->fetch_assoc()) {
-                echo '<div class="sucursal">';
-                echo '<h2>' . $fila['NombreSucursal'] . '</h2>';
-                echo '<p><strong>Dirección:</strong> ' . $fila['DireccionSucursal'] . '</p>';
-                echo '<p><strong>Teléfono:</strong> ' . $fila['TelefonoSucursal'] . '</p>';
-                echo '</div>';
             }
-        } else {
-            echo "No se encontraron sucursales.";
-        }
+            } else {
+                echo "No se encontraron sucursales.";
+            }
 
-        $conexion->close();
+            $conexion->close();
         ?>
-
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
 </body>
-
 </html>
