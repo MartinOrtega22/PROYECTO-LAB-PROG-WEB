@@ -4,75 +4,51 @@ body {
     padding: 0;
     background-color: #E1EDF6 !important;
 }
+
 /* Menu */
 .nav {
     background-color: #180876;
     padding: 20px 0;
-  }
+}
 
-  .nav-link {
+.nav-link {
     color: white !important;
-  }
+}
 
-/* Contenido */
-.inicio {
-    width: 45%;
-    margin: 1%;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+.inicio,
+.registro {
     text-align: center;
-    float: left;
 }
-.separador{
-    float: left;
-    width: .5%;
-    background-color: #6DADD1;
-    height: 350px;
-}
-.registro{
-    width: 45%;
-    float: left;    
-    margin: 1%;
-    text-align: center;
-    padding: 50px;
 
-}
-.registro h4{
+.registro h4 {
     color: #197DC9;
 }
-.registro a{
+
+.registro a {
     text-decoration: none;
-    border: 1px solid;
     border-radius: 25px;
-    margin: 10px;
-    padding: 10px;
     background-color: #2700A8;
     color: #fff;
-    
-}
-h1 {
-    margin-bottom: 20px;
+    padding: 10px 20px;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.registro a:hover {
+    background-color: #180876;
 }
 
-label {
-    margin-bottom: 5px;
+.separador {
+    width: 1px;
+    background-color: #6DADD1;
+    height: auto;
+    margin: 0 15px;
 }
 
 input[type="email"],
 input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #197DC9;
-    border-radius: 50px;
-    margin-bottom: 10px;
     text-align: center;
 }
 
-
+.full-height {
+    display: flex;
+    align-items: center;
+}

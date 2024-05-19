@@ -26,11 +26,9 @@ $sql = "INSERT INTO producto (IdProducto, NombreProducto, DescripcionProducto, P
         VALUES ('$idProducto', '$nombreProducto', '$descripcionProducto', '$precioProducto', '$categoriaProducto', '$imagenProducto')";
 
 if ($conn->query($sql) === TRUE) {
-    header("Location: ../CRUDProductos.php?success=1");
-    exit();
+    echo json_encode(['success' => true, 'message' => 'Producto guardado correctamente']);
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    echo json_encode(['success' => false, 'message' => 'El ID del producto ya existe']);
 }
 
 $conn->close();
-?>

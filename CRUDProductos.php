@@ -32,10 +32,8 @@ if ($resultCategorias->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Productos</title>
     <link rel="stylesheet" href="css/CRUDProductos.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
-
 </head>
 
 <body>
@@ -62,15 +60,63 @@ if ($resultCategorias->num_rows > 0) {
 
     <div class="container">
         <h2>Lista de Productos</h2>
-        <input type="text">
-        <button type="button" class="btn btn-primary">Buscar</button>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="input-group">
+                <span class="input-group-text" id="searchIcon">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control" placeholder="Buscar..." style="flex: 1;">
+            </div>
+            <button type="button" class="btn btn-primary m-2" id="btnAgregar" data-bs-toggle="modal" data-bs-target="#agregarProductoModal">Agregar</button>
+        </div>
+        <!-- Modal para editar -->
+        <div class="modal fade" id="editarProductoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Editar Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formEditarProducto" action="accionphp/editarproducto.php" method="post" enctype="multipart/form-data">
+                            <input type="hidden" id="editIdProducto" name="id">
+                            <div class="mb-3">
+                                <label for="editNombreProducto" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="editNombreProducto" name="nombreProducto" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editDescripcionProducto" class="form-label">Descripción</label>
+                                <input type="text" class="form-control" id="editDescripcionProducto" name="descripcionProducto" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editPrecioProducto" class="form-label">Precio</label>
+                                <input type="number" class="form-control" id="editPrecioProducto" name="precioProducto" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editCategoriaProducto" class="form-label">Categoría</label>
+                                <select class="form-control" id="editCategoriaProducto" name="categoriaProducto" required>
+                                    <option value="">Selecciona una categoría</option>
+                                    <?php foreach ($categorias as $categoria) : ?>
+                                        <option value="<?php echo $categoria['idcategoria']; ?>"><?php echo $categoria['descripcioncategoria']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editImagenProducto" class="form-label">Imagen del Producto</label>
+                                <input type="file" class="form-control" id="editImagenProducto" name="imagenProducto">
+                                <img id="editImagenPreview" class="col-12" src="" alt="Imagen del Producto" style="display: none;">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" form="formEditarProducto">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <!-- Botón para abrir el modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarProductoModal">
-            Agregar
-        </button>
-
-        <!-- Modal -->
+        <!-- Modal para agregar -->
         <div class="modal fade" id="agregarProductoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -82,7 +128,7 @@ if ($resultCategorias->num_rows > 0) {
                         <form id="formAgregarProducto" action="accionphp/agregarproducto.php" method="post" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="idProducto" class="form-label">ID Producto</label>
-                                <input type="text" class="form-control" id="idProducto" name="idProducto" required>
+                                <input type="number" class="form-control" id="idProducto" name="idProducto" required>
                             </div>
                             <div class="mb-3">
                                 <label for="nombreProducto" class="form-label">Nombre</label>
@@ -100,7 +146,7 @@ if ($resultCategorias->num_rows > 0) {
                                 <label for="categoriaProducto" class="form-label">Categoría</label>
                                 <select class="form-control" id="categoriaProducto" name="categoriaProducto" required>
                                     <option value="">Selecciona una categoría</option>
-                                    <?php foreach ($categorias as $categoria): ?>
+                                    <?php foreach ($categorias as $categoria) : ?>
                                         <option value="<?php echo $categoria['idcategoria']; ?>"><?php echo $categoria['descripcioncategoria']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -119,7 +165,7 @@ if ($resultCategorias->num_rows > 0) {
             </div>
         </div>
 
-        <table class="table">
+        <table class="table" id="dataTable">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -131,7 +177,6 @@ if ($resultCategorias->num_rows > 0) {
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody>
             <?php
             $sql = "SELECT IdProducto, NombreProducto, DescripcionProducto, PrecioProducto, DescripcionCategoria, ImagenProducto FROM producto JOIN categorias WHERE CategoriaProducto=IdCategoria";
             $result = $conn->query($sql);
@@ -144,8 +189,9 @@ if ($resultCategorias->num_rows > 0) {
                     echo "<td>" . $row["DescripcionProducto"] . "</td>";
                     echo "<td>" . $row["PrecioProducto"] . "</td>";
                     echo "<td>" . $row["DescripcionCategoria"] . "</td>";
-                    echo "<td><img src='data:image/jpeg;base64," . base64_encode($row["ImagenProducto"]) . "' width='50' height='50'></td>";
-                    echo '<td><a href="editar.php?id=' . $row["IdProducto"] . '" id="btnEditar"><img src="img/editar.png"></a>  <a href="eliminar.php?id=' . $row["IdProducto"] . '" id="btnEliminar"><img src="img/eliminar.png"></a></td>';
+                    echo "<td><img class='col-6' src='data:image/jpeg;base64," . base64_encode($row["ImagenProducto"]) . "' width='50' height='50'></td>";
+                    echo '<td><a href="#" class="btn btn-primary editar-btn" data-bs-toggle="modal" data-bs-target="#editarProductoModal" data-id="' . $row["IdProducto"] . '"><i class="bi bi-pencil"></i></a>';
+                    echo '<button data-id="' . $row["IdProducto"] . '" class="btn btn-danger eliminar-btn"><i class="bi bi-trash"></i></button></td>';
                     echo "</tr>";
                 }
             } else {
@@ -153,30 +199,12 @@ if ($resultCategorias->num_rows > 0) {
             }
             $conn->close();
             ?>
-            </tbody>
         </table>
     </div>
 
-    <?php if (isset($_GET['success'])): ?>
-        <div class="alert alert-success text-center" role="alert" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1050;">
-            Producto agregado correctamente.
-        </div>
-        <script>
-            setTimeout(() => {
-                document.querySelector('.alert').remove();
-            }, 3000);
-        </script>
-    <?php endif; ?>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-    <script>
-        // Limpiar el formulario cuando se cierra el modal
-        document.getElementById('agregarProductoModal').addEventListener('hidden.bs.modal', function () {
-            document.getElementById('formAgregarProducto').reset();
-        });
-    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="js/CRUDProducto.js"></script>
 </body>
 
 </html>
