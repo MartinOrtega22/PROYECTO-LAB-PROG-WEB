@@ -1,9 +1,23 @@
 
 $(document).ready(function () {
 
+
+    //Funcion de obtener fecha y hora
+    function getCurrentDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:00`;
+    }
+    $('#fechaAlta').val(getCurrentDateTime());
+
     //Editar
     $('.editar-btn').click(function () {
-        var idProducto = $(this).data('id');
+        var idSucursal = $(this).data('id');
 
         if (!idSucursal) {
             console.error('ID de sucursal no proporcionado');
@@ -21,12 +35,11 @@ $(document).ready(function () {
                 if (data.error) {
                     console.error('Error:', data.error);
                 } else {
-                    $('#editIdSucursal').val(data.IdSucursal);
-                    $('#editNombreSucursal').val(data.NombreSucursal);
-                    $('#editDireccionSucursal').val(data.DireccionSucursal);
-                    $('#editTelefonoSucursal').val(data.TelefonoSucursal);
-                    $('#editIdUsuario').val(data.IdUsuario);
-                    $('#editFechaAlta').val(data.FechaAlta);
+                    $('#editnombreSucursal').val(data.NombreSucursal);
+                    $('#editdireccionSucursal').val(data.DireccionSucursal);
+                    $('#edittelefonoSucursal').val(data.TelefonoSucursal);
+                    $('#editUsuario').val(data.IdUsuario);
+                    $('#editfechaAlta').val(data.FechaAlta);
                 }
             },
             error: function (xhr, status, error) {

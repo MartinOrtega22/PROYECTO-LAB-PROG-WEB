@@ -14,8 +14,8 @@ if ($conn->connect_error) {
 }
 
 if (isset($_GET['idSucursal'])) {
-    $idProducto = $_GET['idSucursal'];
-    $sql = "SELECT IdSucursal, NombreSucursal, DireccionSucursal, TelefonoSucursal, IdUsuario, FechaAlta FROM sucursal WHERE IdSucursal = ?";
+    $idSucursal = $_GET['idSucursal'];
+    $sql = "SELECT NombreSucursal, DireccionSucursal, TelefonoSucursal, IdUsuario, FechaAlta FROM sucursal WHERE IdSucursal = ?";
     $stmt = $conn->prepare($sql);
 
     if ($stmt === false) {
@@ -40,4 +40,3 @@ if (isset($_GET['idSucursal'])) {
 }
 
 $conn->close();
-?>

@@ -14,17 +14,17 @@ if ($conn->connect_error) {
 }
 
 // Verificar que los datos del formulario estén presentes
-if (isset($_POST['id']) && isset($_POST['nombreSucursal']) && isset($_POST['direccionSucursal']) && isset($_POST['telefonoSucursal']) && isset($_POST['idUsuario']) && isset($_POST['fechaAlta'])) {
+if (isset($_POST['id']) && isset($_POST['nombreSucursal']) && isset($_POST['direccionSucursal']) && isset($_POST['telefonoSucursal']) && isset($_POST['Usuario']) && isset($_POST['fechaAlta'])) {
     $idSucursal = $_POST['id'];
     $nombreSucursal = $_POST['nombreSucursal'];
     $direccionSucursal = $_POST['direccionSucursal'];
     $telefonoSucursal = $_POST['telefonoSucursal'];
-    $idUsuario = $_POST['idUsuario'];
+    $idUsuario = $_POST['Usuario'];
     $fechaAlta = $_POST['fechaAlta'];
 
     $sql = "UPDATE sucursal SET NombreSucursal = ?, DireccionSucursal = ?, TelefonoSucursal = ?, IdUsuario = ?, FechaAlta = ? WHERE IdSucursal = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssissi", $nombreSucursal, $direccionSucursal, $telefonoSucursal, $idUsuario, $fechaAlta);
+    $stmt->bind_param("ssiisi", $nombreSucursal, $direccionSucursal, $telefonoSucursal, $idUsuario, $fechaAlta, $idSucursal);
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Sucursal actualizada correctamente']);
     } else {

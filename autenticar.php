@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Verificar contraseña
         if (password_verify($contrasena, $usuario['ContrasenaUsuario'])) {
             // Autenticación exitosa
+            $_SESSION['id'] = $usuario['IdUsuario'];
             $_SESSION['usuario'] = $usuario['NombreUsuario'];
             $_SESSION['correo'] = $usuario['CorreoUsuario'];
             $_SESSION['rol'] = $usuario['RolUsuario'];

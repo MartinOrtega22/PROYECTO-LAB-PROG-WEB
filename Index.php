@@ -95,7 +95,7 @@ $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : "0"; // Asignar rol de "Usua
         </div>
     </nav>
     <div class="container mt-5">
-        <h1>Bienvenido, <?php echo $_SESSION['usuario']; ?></h1>
+        <h1>Bienvenido <?php echo $_SESSION['usuario'];   ?></h1>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

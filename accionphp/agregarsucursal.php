@@ -14,23 +14,20 @@ if ($conn->connect_error) {
 }
 
 // Obtener datos del formulario
-$idSucursal = $_POST['idSucursal'];
 $nombreSucursal = $_POST['nombreSucursal'];
 $direccionSucursal = $_POST['direccionSucursal'];
 $telefonoSucursal = $_POST['telefonoSucursal'];
-$idUsuario = $_POST['idUsuario'];
+$idUsuario = $_POST['Usuario'];
 $fechaAlta = $_POST['fechaAlta'];
 
 // Insertar nueva sucursal
-$sql = "INSERT INTO sucursal (idSucursal, nombreSucursal, direccionSucursal, telefonoSucursal, idUsuario, fechaAlta)
-        VALUES ('$idSucursal', '$nombreSucursal', '$direccionSucursal', '$telefonoSucursal', '$idUsuario', '$fechaAlta')";
+$sql = "INSERT INTO sucursal (nombreSucursal, direccionSucursal, telefonoSucursal, idUsuario, fechaAlta)
+        VALUES ('$nombreSucursal', '$direccionSucursal', '$telefonoSucursal', '$idUsuario', '$fechaAlta')";
 
 if ($conn->query($sql) === TRUE) {
-    header("Location: ../CRUDSucursales.php?success=1");
-    exit();
+    echo json_encode(['success' => true, 'message' => 'Sucursal guardada correctamente']);
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    echo json_encode(['success' => false, 'message' => 'Error al guardar la sucursal']);
 }
 
 $conn->close();
-?>

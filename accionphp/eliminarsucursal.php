@@ -11,7 +11,7 @@ if ($conn->connect_error) {
 }
 
 if (isset($_POST['idSucursal'])) {
-    $idProducto = $_POST['idSucursal'];
+    $idSucursal = $_POST['idSucursal'];
 
     $sql = "DELETE FROM sucursal WHERE idSucursal = ?";
     $stmt = $conn->prepare($sql);
