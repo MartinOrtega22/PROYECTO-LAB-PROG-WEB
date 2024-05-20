@@ -1,4 +1,22 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['correo'])) {
+
+    $_SESSION['rol'] = "0";
+}
+
+
+$roles = [
+    "0" => "Usuario sin cuenta",
+    "1" => "Administrador",
+    "2" => "Empleado",
+    "3" => "Cliente"
+];
+
+$rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : "0"; // Asignar rol de "Usuario sin cuenta"
+
+
 // Variables base de datos
 $host = "localhost";
 $usuario = "root";
@@ -36,51 +54,55 @@ if ($conn->connect_error) {
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="Index.php">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="CRUDSucursales.php">Administrar Sucursales</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="CRUDProductos.php">Administrar Productos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="CRUDUsuarios.php">Administrar Usuarios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="CRUDSecundarias.php">Administrar Secundarias</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="ReporteVenta.php">Reporte de Ventas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="CRUDMisCompras.php">Mis Compras</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="CatalogoProductos.php">Catálogo Productos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Nosotros</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="Sucursales.php"><i class="bi bi-geo-alt"></i></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-cart4"></i></a>
-                    </li>
-                    <li class="nav-item">
+                    <?php
+                    // Obtener el rol actual del usuario
+                    $rolNombre = $roles[$rol];
 
+                    if ($rolNombre == "Usuario sin cuenta" || $rol == "3" || $rol == "2" || $rol == "1") {
+                        echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="Index.php" id="M1">Inicio</a></li>';
+                    }
+                    if ($rol == "1") {
+                        echo '<li class="nav-item"><a class="nav-link" href="CRUDSucursales.php" id="M2">Administrar Sucursales</a></li>';
+                    }
+                    if ($rol == "1" || $rol == "2") {
+                        echo '<li class="nav-item"><a class="nav-link" href="CRUDProductos.php" id="M3">Administrar Productos</a></li>';
+                    }
+                    if ($rol == "1") {
+                        echo '<li class="nav-item"><a class="nav-link" href="CRUDUsuarios.php" id="M4">Administrar Usuarios</a></li>';
+                    }
+                    if ($rol == "1") {
+                        echo '<li class="nav-item"><a class="nav-link" href="CRUDSecundarias.php" id="M5">Administrar Secundarias</a></li>';
+                    }
+                    if ($rol == "1" || $rol == "2") {
+                        echo '<li class="nav-item"><a class="nav-link" href="ReporteVenta.php" id="M6">Reporte de Ventas</a></li>';
+                    }
+                    if ($rol == "3") {
+                        echo '<li class="nav-item"><a class="nav-link" href="CRUDMisCompras.php" id="M7">Mis Compras</a></li>';
+                    }
+                    if ($rolNombre == "Usuario sin cuenta" || $rol == "3" || $rol == "2" || $rol == "1") {
+                        echo '<li class="nav-item"><a class="nav-link" href="CatalogoProductos.php" id="M8">Catálogo Productos</a></li>';
+                        echo '<li class="nav-item"><a class="nav-link" href="#" id="M9">Nosotros</a></li>';
+                        echo '<li class="nav-item"><a class="nav-link" href="Sucursales.php" id="M10"><i class="bi bi-geo-alt"></i></a></li>';
+                    }
+                    if ($rol == "3") {
+                        echo '<li class="nav-item"><a class="nav-link" href="#" id="M11"><i class="bi bi-cart4"></i></a></li>';
+                    }
+                    ?>
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle"></i>
                         </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Iniciar Sesion</a></li>
-                            <li><a class="dropdown-item" href="#">Cambiar Contraseña</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Cerrar Sesion</a></li>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <?php
+                            if ($rolNombre == "Usuario sin cuenta") {
+                                echo '<li><a class="dropdown-item" href="Login.php" id="M12">Iniciar Sesion</a></li>';
+                            }
+                            if ($rol == "3" || $rol == "2" || $rol == "1") {
+                                echo '<li><a class="dropdown-item" href="#" id="M13">Cambiar Contraseña</a></li>';
+                                echo '<li><hr class="dropdown-divider"></li>';
+                                echo '<li><a class="dropdown-item" href="accionphp/logout.php" id="M14">Cerrar Sesion</a></li>';
+                            }
+                            ?>
                         </ul>
                     </li>
                 </ul>
@@ -102,7 +124,6 @@ if ($conn->connect_error) {
                             <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-                    </form>
                     </form>
                 </div>
             </div>

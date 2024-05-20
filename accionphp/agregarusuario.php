@@ -10,22 +10,37 @@ if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nombre = $_POST['nombreUsuario'];
+    $direccion = $_POST['direccionUsuario'];
+    $correo = $_POST['correoUsuario'];
+    $telefono = $_POST['telefonoUsuario'];
+    $rol = $_POST['rolUsuario'];
+    $contrasena = $_POST['contrasenaUsuario'];
+    $contrasenaValidar = $_POST['contrasenaUsuarioValidar'];
 
-$idUsuario = $_POST['idUsuario'];
-$nombreUsuario = $_POST['nombreUsuario'];
-$direccionUsuario = $_POST['direccionUsuario'];
-$correoUsuario = $_POST['correoUsuario'];
-$telefonoUsuario = $_POST['telefonoUsuario'];
-$rolUsuario = $_POST['rolUsuario'];
-$contrasenaUsuario = $_POST['contrasenaUsuario'];
+    // Validar contraseñas
+    if ($contrasena !== $contrasenaValidar) {
+        echo json_encode(['success' => false, 'message' => 'Las contraseñas no coinciden.']);
+        exit();
+    }
 
-$sql = "INSERT INTO Usuario (NombreUsuario, DireccionUsuario, CorreoUsuario, TelefonoUsuario, RolUsuario, ContrasenaUsuario)
-        VALUES ('$nombreUsuario', '$direccionUsuario', '$correoUsuario', '$telefonoUsuario', '$rolUsuario', '$contrasenaUsuario')";
+    $contrasena_hash = password_hash($contrasena, PASSWORD_DEFAULT);
 
-if ($conn->query($sql) === TRUE) {
-    echo json_encode(['success' => true, 'message' => 'Usuario guardado correctamente']);
-} else {
-    echo json_encode(['success' => false, 'message' => 'El ID del usuario ya existe']);
+    // Insertar usuario
+    $sql = "INSERT INTO usuario (nombreUsuario, direccionUsuario, correoUsuario, telefonoUsuario, rolUsuario, contrasenaUsuario) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssssi", $nombre, $direccion, $correo, $telefono, $contrasena_hash, $rol);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssssis", $nombre, $direccion, $correo, $telefono, $rol, $contrasena_hash);
+
+    if ($stmt->execute()) {
+        echo json_encode(['success' => true, 'message' => 'Usuario registrado exitosamente.']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error al registrar usuario: ' . $stmt->error]);
+    }
+
+    $stmt->close();
 }
 
 $conn->close();

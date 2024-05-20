@@ -4,22 +4,22 @@ body {
     padding: 0;
     background-color: #E1EDF6 !important;
 }
-.imagenlogo {
-    height: 45px;
-    width: 45px;
-    border-radius: 50%;
-    border: 2px solid #ddd;
-}
+
 /* Menu */
-.nav {
-    background-color: #180876;
+.navbar {
+    background-color: #180876 !important;
     padding: 20px 0;
 }
 
-.nav-link {
+.navbar .nav-link {
     color: white !important;
 }
 
+.navbar .nav-link:hover {
+    color: #FFD700 !important;
+}
+
+/* Contenido */
 .inicio,
 .registro {
     text-align: center;

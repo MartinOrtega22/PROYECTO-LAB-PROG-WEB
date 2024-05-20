@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.editar-btn').click(function () {
+    $('.editar-btn').on('click', function () {
         var idUsuario = $(this).data('id');
 
         if (!idUsuario) {
@@ -10,26 +10,18 @@ $(document).ready(function () {
         $.ajax({
             url: 'accionphp/obtenerusuario.php',
             type: 'GET',
-            data: {
-                idUsuario: idUsuario
+            data: { idUsuario: idUsuario },
+            success: function (response) {
+                var usuario = JSON.parse(response);
+                $('#editIdUsuario').val(usuario.IdUsuario);
+                $('#editNombreUsuario').val(usuario.NombreUsuario);
+                $('#editDireccionUsuario').val(usuario.DireccionUsuario);
+                $('#editCorreoUsuario').val(usuario.CorreoUsuario);
+                $('#editTelefonoUsuario').val(usuario.TelefonoUsuario);
+                $('#editRolUsuario').val(usuario.RolUsuario);
             },
-            dataType: 'json',
-            success: function (data) {
-                if (data.error) {
-                    console.error('Error:', data.error);
-                } else {
-                    $('#editIdUsuario').val(data.IdUsuario);
-                    $('#editNombreUsuario').val(data.NombreUsuario);
-                    $('#editDireccionUsuario').val(data.DireccionUsuario);
-                    $('#editCorreoUsuario').val(data.CorreoUsuario);
-                    $('#editTelefonoUsuario').val(data.TelefonoUsuario);
-                    $('#editRolUsuario').val(data.RolUsuario);
-                    $('#editContrasenaUsuario').val(data.ContrasenaUsuario);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error en la solicitud AJAX:', status, error);
-                console.error('Respuesta del servidor:', xhr.responseText);
+            error: function () {
+                alert('Error al obtener los datos del usuario');
             }
         });
     });

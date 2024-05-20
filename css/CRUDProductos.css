@@ -1,22 +1,4 @@
-body {
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #E1EDF6 !important;
-}
-
-/* Menu */
-.nav {
-    background-color: #180876;
-    padding: 20px 0;
-    width: 100% !important;
-}
-
-.nav-link {
-    color: white !important;
-}
-
-/* tabla */
+/* Tabla */
 table {
     text-align: center;
 }
@@ -29,13 +11,12 @@ table tr td {
     background-color: #CDD6FF !important;
 }
 
-
 #btnAgregar {
     background-color: #42FF00 !important;
     border-color: #42FF00 !important;
 }
 
-#btnAgregar :hover {
+#btnAgregar:hover {
     background-color: #91f36d !important;
 }
 
@@ -48,7 +29,7 @@ h2 {
     list-style: none;
 }
 
-.list-group li :hover {
+.list-group li:hover {
     background-color: #99ACFF !important;
     color: #000;
 }
