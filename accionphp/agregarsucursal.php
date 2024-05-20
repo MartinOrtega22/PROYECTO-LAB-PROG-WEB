@@ -18,10 +18,12 @@ $idSucursal = $_POST['idSucursal'];
 $nombreSucursal = $_POST['nombreSucursal'];
 $direccionSucursal = $_POST['direccionSucursal'];
 $telefonoSucursal = $_POST['telefonoSucursal'];
+$idUsuario = $_POST['idUsuario'];
+$fechaAlta = $_POST['fechaAlta'];
 
 // Insertar nueva sucursal
-$sql = "INSERT INTO sucursal (idSucursal, nombreSucursal, direccionSucursal, telefonoSucursal)
-        VALUES ('$idSucursal', '$nombreSucursal', '$direccionSucursal', '$telefonoSucursal')";
+$sql = "INSERT INTO sucursal (idSucursal, nombreSucursal, direccionSucursal, telefonoSucursal, idUsuario, fechaAlta)
+        VALUES ('$idSucursal', '$nombreSucursal', '$direccionSucursal', '$telefonoSucursal', '$idUsuario', '$fechaAlta')";
 
 if ($conn->query($sql) === TRUE) {
     header("Location: ../CRUDSucursales.php?success=1");

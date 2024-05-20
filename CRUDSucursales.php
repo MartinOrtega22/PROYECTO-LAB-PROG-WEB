@@ -53,15 +53,66 @@ if ($conn->connect_error) {
 
     <div class="container">
         <h2>Lista de sucursales</h2>
-        <input type="text">
-        <button type="button" class="btn btn-primary">Buscar</button>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="input-group">
+                <span class="input-group-text" id="searchIcon">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control" placeholder="Buscar..."
+                    style="flex: 1;">
+            </div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#agregarSucursalModal">Agregar</button><!-- Botón para abrir el modal -->
+        </div>
 
-        <!-- Botón para abrir el modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarSucursalModal">
-            Agregar
-        </button>
 
-        <!-- Modal -->
+        <!-- Modal para editar -->
+        <div class="modal fade" id="editarSucursalModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Editar Sucursal</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    <form id="formEditarSucursal" action="accionphp/editarsucursal.php" method="post" enctype="multipart/form-data">
+                            <input type="hidden" id="editIdSucursal" name="id">
+                            <div class="mb-3">
+                                <label for="editNombreSucursal" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="editNombreSucursal" name="editNombreSucursal"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editDireccionSucursal" class="form-label">Dirección</label>
+                                <input type="text" class="form-control" id="editDireccionSucursal" name="editDireccionSucursal"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editTelefonoSucursal" class="form-label">Teléfono</label>
+                                <input type="number" class="form-control" id="editTelefonoSucursal" name="editTelefonoSucursal"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editIdUsuario" class="form-label">Id Usuario</label>
+                                <input type="number" class="form-control" id="editIdUsuario" name="editIdUsuario" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editFechaAlta" class="form-label">Fecha de alta</label>
+                                <input type="number" class="form-control" id="editFechaAlta" name="editFechaAlta" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" form="formEditSucursal">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Modal para agregar -->
         <div class="modal fade" id="agregarSucursalModal" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -84,13 +135,21 @@ if ($conn->connect_error) {
                             </div>
                             <div class="mb-3">
                                 <label for="direccionSucursal" class="form-label">Dirección</label>
-                                <input type="text" class="form-control" id="direccionSucursal"
-                                    name="direccionSucursal" required>
+                                <input type="text" class="form-control" id="direccionSucursal" name="direccionSucursal"
+                                    required>
                             </div>
                             <div class="mb-3">
                                 <label for="telefonoSucursal" class="form-label">Teléfono</label>
                                 <input type="number" class="form-control" id="telefonoSucursal" name="telefonoSucursal"
                                     required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="idUsuario" class="form-label">Id Usuario</label>
+                                <input type="number" class="form-control" id="idUsuario" name="idUsuario" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="fechaAlta" class="form-label">Fecha de alta</label>
+                                <input type="number" class="form-control" id="fechaAlta" name="fechaAlta" required>
                             </div>
                         </form>
                     </div>
@@ -107,10 +166,12 @@ if ($conn->connect_error) {
                 <th>Nombre</th>
                 <th>Dirección</th>
                 <th>Teléfono</th>
+                <th>Id Usuario</th>
+                <th>Fecha de alta</th>
                 <th>Acciones</th>
             </tr>
             <?php
-            $sql = "SELECT IdSucursal, NombreSucursal, DireccionSucursal, TelefonoSucursal FROM sucursal";
+            $sql = "SELECT IdSucursal, NombreSucursal, DireccionSucursal, TelefonoSucursal, IdUsuario, FechaAlta FROM sucursal";
             $result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
@@ -120,7 +181,10 @@ if ($conn->connect_error) {
                     echo "<td>" . $row["NombreSucursal"] . "</td>";
                     echo "<td>" . $row["DireccionSucursal"] . "</td>";
                     echo "<td>" . $row["TelefonoSucursal"] . "</td>";
-                    echo '<td><a href="editar.php?id=' . $row["IdSucursal"] . '" id="btnEditar"><img src="img/editar.png"></a>  <a href="eliminar.php?id=' . $row["IdSucursal"] . '" id="btnEliminar"><img src="img/eliminar.png"></a></td>';
+                    echo "<td>" . $row["IdUsuario"] . "</td>";
+                    echo "<td>" . $row["FechaAlta"] . "</td>";
+                    echo '<td><a href="#" class="btn btn-primary editar-btn" data-bs-toggle="modal" data-bs-target="#editarSucursalModal" data-id="' . $row["IdSucursal"] . '"><i class="bi bi-pencil"></i></a>';
+                    echo '<button data-id="' . $row["IdSucursal"] . '" class="btn btn-danger eliminar-btn"><i class="bi bi-trash"></i></button></td>';
                     echo "</tr>";
                 }
             } else {
@@ -133,28 +197,9 @@ if ($conn->connect_error) {
     </div>
 
 
-    <?php if (isset($_GET['success'])): ?>
-        <div class="alert alert-success text-center" role="alert"
-            style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1050;">
-            Sucursal agregada correctamente.
-        </div>
-        <script>
-            setTimeout(() => {
-                document.querySelector('.alert').remove();
-            }, 3000);
-        </script>
-    <?php endif; ?>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-    <script>
-        // Limpiar el formulario cuando se cierra el modal
-        document.getElementById('agregarSucursalModal').addEventListener('hidden.bs.modal', function () {
-            document.getElementById('formAgregarSucursal').reset();
-        });
-    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="js/CRUDSucursal.js"></script>
 </body>
 
 </html>
