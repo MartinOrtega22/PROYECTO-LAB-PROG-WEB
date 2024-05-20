@@ -4,7 +4,12 @@ body {
     padding: 0;
     background-color: #E1EDF6 !important;
 }
-
+.imagenlogo {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+}
 /* Menu */
 .nav {
     background-color: #180876;

@@ -6,9 +6,41 @@ html, main, body {
     height: 45px;
     width: 45px;
     border-radius: 50%;
-    border: 2px solid #ddd; /* Opcional: agrega un borde delgado y gris */
+    border: 2px solid #ddd; 
 }
 
 .container {
     background-color: #afc8f7 !important;
+}
+
+
+.carousel-inner {
+    padding-bottom: 50px;
+}
+
+.container.my-5 {
+    background-color: white;
+    padding: 50px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.container.my-5 h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 3rem;
+    color: #4a4a4a;
+    margin-bottom: 20px;
+}
+
+.container.my-5 p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.btn.btn-primary {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    padding: 10px 30px;
 }

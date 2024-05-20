@@ -1,4 +1,4 @@
-main{
+main {
     background-color: #afc8f7;
 }
 
@@ -49,11 +49,19 @@ main{
     text-align: justify; /* Centra el texto horizontalmente */
 }
 
-.titulocards{
+.titulocards {
     font-family: 'Monaco', sans-serif;
 }
 
-.textcards{
+.textcards {
     font-family: 'Helvetica', sans-serif;
 }
 
+.encabezado-nosotros {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #3f3f3f;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
