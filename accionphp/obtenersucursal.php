@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 
 if (isset($_GET['idSucursal'])) {
     $idSucursal = $_GET['idSucursal'];
-    $sql = "SELECT NombreSucursal, DireccionSucursal, TelefonoSucursal, IdUsuario, FechaAlta FROM sucursal WHERE IdSucursal = ?";
+    $sql = "SELECT IdSucursal, NombreSucursal, DireccionSucursal, TelefonoSucursal, IdUsuario, FechaAlta FROM sucursal WHERE IdSucursal = ?";
     $stmt = $conn->prepare($sql);
 
     if ($stmt === false) {

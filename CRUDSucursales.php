@@ -144,7 +144,9 @@ if ($resultUsuario->num_rows > 0) {
                     </div>
                     <div class="modal-body">
                         <form id="formEditarSucursal" action="accionphp/editarsucursal.php" method="post" enctype="multipart/form-data">
+
                             <input type="hidden" id="editIdSucursal" name="id">
+
                             <div class="mb-3">
                                 <label for="editnombreSucursal" class="form-label">Nombre</label>
                                 <input type="text" class="form-control" id="editnombreSucursal" name="nombreSucursal" required>
@@ -220,38 +222,44 @@ if ($resultUsuario->num_rows > 0) {
                 </div>
             </div>
         </div>
-        <table class="table">
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Dirección</th>
-                <th>Teléfono</th>
-                <th>Usuario</th>
-                <th>Fecha de Alta</th>
-                <th>Acciones</th>
-            </tr>
-            <?php
-            $sql = "SELECT IdSucursal, NombreSucursal, DireccionSucursal, TelefonoSucursal, NombreUsuario, FechaAlta FROM sucursal s join usuario u where s.IdUsuario=u.IdUsuario";
-            $result = $conn->query($sql);
 
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>";
-                    echo "<td>" . $row["IdSucursal"] . "</td>";
-                    echo "<td>" . $row["NombreSucursal"] . "</td>";
-                    echo "<td>" . $row["DireccionSucursal"] . "</td>";
-                    echo "<td>" . $row["TelefonoSucursal"] . "</td>";
-                    echo "<td>" . $row["NombreUsuario"] . "</td>";
-                    echo "<td>" . $row["FechaAlta"] . "</td>";
-                    echo '<td><a href="#" class="btn btn-primary editar-btn" data-bs-toggle="modal" data-bs-target="#editarSucursalModal" data-id="' . $row["IdSucursal"] . '"><i class="bi bi-pencil"></i></a>';
-                    echo '<button data-id="' . $row["IdSucursal"] . '" class="btn btn-danger eliminar-btn"><i class="bi bi-trash"></i></button></td>';
-                    echo "</tr>";
+        <table class="table" id="dataTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Usuario</th>
+                    <th>Fecha de Alta</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $sql = "SELECT IdSucursal, NombreSucursal, DireccionSucursal, TelefonoSucursal, NombreUsuario, FechaAlta FROM sucursal s join usuario u where s.IdUsuario=u.IdUsuario";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["IdSucursal"] . "</td>";
+                        echo "<td>" . $row["NombreSucursal"] . "</td>";
+                        echo "<td>" . $row["DireccionSucursal"] . "</td>";
+                        echo "<td>" . $row["TelefonoSucursal"] . "</td>";
+                        echo "<td>" . $row["NombreUsuario"] . "</td>";
+                        echo "<td>" . $row["FechaAlta"] . "</td>";
+                        echo '<td><a href="#" class="btn btn-primary editar-btn" data-bs-toggle="modal" data-bs-target="#editarSucursalModal" data-id="' . $row["IdSucursal"] . '"><i class="bi bi-pencil"></i></a>';
+                        echo '<button data-id="' . $row["IdSucursal"] . '" class="btn btn-danger eliminar-btn"><i class="bi bi-trash"></i></button></td>';
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='7'>No se encontraron resultados</td></tr>";
                 }
-            } else {
-                echo "<tr><td colspan='7'>No se encontraron resultados</td></tr>";
-            }
-            $conn->close();
-            ?>
+                $conn->close();
+                ?>
+            </tbody>
+
         </table>
     </div>
 

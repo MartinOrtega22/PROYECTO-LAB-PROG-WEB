@@ -35,6 +35,8 @@ $(document).ready(function () {
                 if (data.error) {
                     console.error('Error:', data.error);
                 } else {
+                    $('#editIdSucursal').val(data.IdSucursal);
+
                     $('#editnombreSucursal').val(data.NombreSucursal);
                     $('#editdireccionSucursal').val(data.DireccionSucursal);
                     $('#edittelefonoSucursal').val(data.TelefonoSucursal);

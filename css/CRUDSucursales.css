@@ -1,8 +1,6 @@
 /* tabla */
 table {
     text-align: center;
-    width: 90% !important;
-    margin: 20px 5%;
 }
 
 table tr th {
@@ -13,25 +11,13 @@ table tr td {
     background-color: #CDD6FF !important;
 }
 
-#btnEditar {
-    background-color: #0075FF;
-    padding: 5px;
-    border-radius: 10px;
-}
-
-#btnEliminar {
-    background-color: #FF0000;
-    padding: 5px;
-    border-radius: 10px;
-}
-
-.btnAgregar {
+#btnAgregar {
     background-color: #42FF00;
-    padding: 10px;
-    margin: 10px;
-    text-decoration: none;
-    color: #000;
-    border-radius: 10px;
+    border-color: #42FF00 !important;
+}
+
+#btnAgregar:hover {
+    background-color: #91f36d !important;
 }
 
 h2 {
