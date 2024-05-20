@@ -1,0 +1,59 @@
+main{
+    background-color: #afc8f7;
+}
+
+.info-left {
+    background-color: #75a3fa;
+    color: black;
+    padding: 90px;
+    border-radius: 30px;
+}
+
+.info-center {
+    background-color: #afc8f7;
+    color: black;
+}
+
+    .info-center h3, .info-center p {
+        background-color: mediumpurple;
+        color: black;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+.info-right {
+    background-color: #afc8f7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+    .info-right img {
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+
+
+
+.imagenlogo {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    border: 2px solid #ddd; /* Opcional: agrega un borde delgado y gris */
+}
+
+
+.info-left p, .info-center p, .info-right p {
+    text-align: justify; /* Ajusta el texto para que ocupe todo el ancho del contenedor */
+    text-align: justify; /* Centra el texto horizontalmente */
+}
+
+.titulocards{
+    font-family: 'Monaco', sans-serif;
+}
+
+.textcards{
+    font-family: 'Helvetica', sans-serif;
+}
+

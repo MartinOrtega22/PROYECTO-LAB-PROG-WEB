@@ -1,0 +1,14 @@
+html, main, body {
+    background-color: #afc8f7 !important;
+}
+
+.imagenlogo {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    border: 2px solid #ddd; /* Opcional: agrega un borde delgado y gris */
+}
+
+.container {
+    background-color: #afc8f7 !important;
+}
