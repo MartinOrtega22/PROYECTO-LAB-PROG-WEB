@@ -41,8 +41,7 @@ if (isset($_GET['idProducto'])) {
 
     $stmt->close();
 } else {
-    echo json_encode(['error' => 'ID de producto no proporcionado']);
+    echo json_encode(['error' => 'ID de producto no proporcionado jeje']);
 }
 
 $conn->close();
-?>

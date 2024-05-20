@@ -30,6 +30,17 @@ $conexion = new mysqli($host, $usuario, $contra, $bd);
 if ($conexion->connect_error) {
     die("Error de conexión: " . $conexion->connect_error);
 }
+
+$sqlCategorias = "SELECT IdCategoria, DescripcionCategoria FROM categorias";
+$rcat = $conexion->query($sqlCategorias);
+
+$categorias = [];
+if ($rcat->num_rows > 0) {
+    while ($row = $rcat->fetch_assoc()) {
+        $categorias[] = $row;
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -122,28 +133,74 @@ if ($conexion->connect_error) {
         <input type="text">
         <button type="button" class="btn btn-primary">Buscar</button>
 
+        <!-- MODAL DETALLE -->
+        <div class="modal fade" id="detalleProductoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formEditarProducto" action="accionphp/editarproducto.php" method="post" enctype="multipart/form-data">
+                            <input type="hidden" id="editIdProducto" name="id">
+                            <div class="mb-3">
+                                <label for="editNombreProducto" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="editNombreProducto" name="nombreProducto" required disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editDescripcionProducto" class="form-label">Descripción</label>
+                                <input type="text" class="form-control" id="editDescripcionProducto" name="descripcionProducto" required disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editPrecioProducto" class="form-label">Precio</label>
+                                <input type="number" class="form-control" id="editPrecioProducto" name="precioProducto" required disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editCategoriaProducto" class="form-label">Categoría</label>
+                                <select class="form-control" id="editCategoriaProducto" name="categoriaProducto" required disabled>
+                                    <option value="">Selecciona una categoría</option>
+                                    <?php foreach ($categorias as $categoria) : ?>
+                                        <option value="<?php echo $categoria['IdCategoria']; ?>"><?php echo $categoria['DescripcionCategoria']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <!-- <label for="editImagenProducto" class="form-label">Imagen del Producto</label>
+                                <input type="file" class="form-control" id="editImagenProducto" name="imagenProducto"> -->
+                                <img id="editImagenPreview" class="col-12" src="" alt="Imagen del Producto" style="display: none;">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" form="formEditarProducto">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <?php
 
 
         // Consulta para obtener los productos
-        $consulta = "SELECT IdProducto, NombreProducto, DescripcionProducto, PrecioProducto, DescripcionCategoria AS CategoriaProducto, ImagenProducto
-                     FROM producto
-                     INNER JOIN categorias ON CategoriaProducto = IdCategoria";
-        $resultado = mysqli_query($conexion, $consulta);
+        $consulta = "SELECT IdProducto, NombreProducto, DescripcionProducto, PrecioProducto, DescripcionCategoria, ImagenProducto FROM producto JOIN categorias WHERE CategoriaProducto=IdCategoria";
+
+        $resultado = $conexion->query($consulta);
 
         // Mostrar los productos
-        if (mysqli_num_rows($resultado) > 0) {
+        if ($resultado->num_rows > 0) {
             echo '<div class="row row-cols-3">';
-            while ($producto = mysqli_fetch_assoc($resultado)) {
+            while ($row = $resultado->fetch_assoc()) {
                 echo '<div class="col mb-4 mt-4">';
                 echo '<div class="card">';
-                echo '<img src="data:image/jpeg;base64,' . base64_encode($producto['ImagenProducto']) . '" class="card-img-top" alt="' . $producto['NombreProducto'] . '">';
+                echo '<img src="data:image/jpeg;base64,' . base64_encode($row['ImagenProducto']) . '" class="card-img-top" alt="' . $row['NombreProducto'] . '">';
                 echo '<div class="card-body">';
-                echo '<h5 class="card-title">' . $producto['NombreProducto'] . '</h5>';
-                echo '<p class="card-text">' . $producto['DescripcionProducto'] . '</p>';
-                echo '<p class="card-text">Categoría: ' . $producto['CategoriaProducto'] . '</p>';
-                echo '<a href="#" class="btn btn-primary">Ver detalle</a>';
+                echo '<h5 class="card-title">' . $row['NombreProducto'] . '</h5>';
+                echo '<p class="card-text">Codigo: ' . $row['IdProducto'] . '</p>';
+                echo '<p class="card-text">' . $row['DescripcionProducto'] . '</p>';
+                echo '<p class="card-text">Categoría: ' . $row['DescripcionCategoria'] . '</p>';
+                echo '<td><a href="#" class="btn btn-primary editar-btn" data-bs-toggle="modal" data-bs-target="#detalleProductoModal" data-id="' . $row["IdProducto"] . '">Ver detalle</i></a>';
                 echo '</div>';
                 echo '</div>';
                 echo '</div>';
@@ -157,9 +214,51 @@ if ($conexion->connect_error) {
         ?>
     </div>
 
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function() {
 
+            $('.editar-btn').click(function() {
+                var idProducto = $(this).data('id');
+
+                if (!idProducto) {
+                    console.error('ID de producto no proporcionado');
+                    return;
+                }
+
+                $.ajax({
+                    url: 'accionphp/obtenerproducto.php',
+                    type: 'GET',
+                    data: {
+                        idProducto: idProducto
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.error) {
+                            console.error('Error:', data.error);
+                        } else {
+                            $('#editIdProducto').val(data.IdProducto);
+                            $('#editNombreProducto').val(data.NombreProducto);
+                            $('#editDescripcionProducto').val(data.DescripcionProducto);
+                            $('#editPrecioProducto').val(data.PrecioProducto);
+                            $('#editCategoriaProducto').val(data.CategoriaProducto);
+
+                            if (data.ImagenProducto) {
+                                $('#editImagenPreview').attr('src', 'data:image/jpeg;base64,' + data.ImagenProducto).show();
+                            } else {
+                                $('#editImagenPreview').hide();
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error en la solicitud AJAX:', status, error);
+                        console.error('Respuesta del servidor:', xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

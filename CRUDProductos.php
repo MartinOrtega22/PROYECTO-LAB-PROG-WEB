@@ -145,7 +145,7 @@ if ($resultCategorias->num_rows > 0) {
                     </div>
                     <div class="modal-body">
                         <form id="formEditarProducto" action="accionphp/editarproducto.php" method="post" enctype="multipart/form-data">
-                            <input type="hidden" id="editIdProducto" name="id">
+                            <input type="text" id="editIdProducto" name="id">
                             <div class="mb-3">
                                 <label for="editNombreProducto" class="form-label">Nombre</label>
                                 <input type="text" class="form-control" id="editNombreProducto" name="nombreProducto" required>
