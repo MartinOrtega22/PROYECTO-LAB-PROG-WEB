@@ -12,7 +12,6 @@ $conn = new mysqli($host, $usuario, $contra, $bd);
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -25,64 +24,85 @@ if ($conn->connect_error) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/login.css">
 
-    <style>
-
-    </style>
 </head>
 
 <body>
-    <ul class="nav justify-content-end">
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Inicio</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="CRUDSucursales.php">Administrar Sucursales</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="CRUDProductos.php">Administrar Productos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="CRUDUsuarios.php">Administrar Usuarios</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="CRUDSecundarias.php">Administrar Secundarias</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="ReporteVenta.php">Reporte de Ventas</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="CRUDMisCompras.php">Mis Compras</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="CatalogoProductos.php">Catalogo Productos</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Nosotros</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="Sucursales.php"><i class="bi bi-geo-alt"></i></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-cart4"></i></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-person-circle"></i></a>
-        </li>
-    </ul>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="Index.php">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="CRUDSucursales.php">Administrar Sucursales</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="CRUDProductos.php">Administrar Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="CRUDUsuarios.php">Administrar Usuarios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="CRUDSecundarias.php">Administrar Secundarias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ReporteVenta.php">Reporte de Ventas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="CRUDMisCompras.php">Mis Compras</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="CatalogoProductos.php">Catálogo Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Sucursales.php"><i class="bi bi-geo-alt"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-cart4"></i></a>
+                    </li>
+                    <li class="nav-item">
+
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Iniciar Sesion</a></li>
+                            <li><a class="dropdown-item" href="#">Cambiar Contraseña</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Cerrar Sesion</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-5 bg-white p-4 mx-1 rounded border inicio full-height">
                 <div class="w-100">
                     <h1>Iniciar sesión</h1>
                     <img src="img/login.jpg" class="col-4 m-3"><br>
-                    <form id="formulario-login">
-                        <div class="mb-3">
-                            <input type="email" class="form-control" id="correo" name="correo" placeholder="Usuario" required>
+                    <form id="formulario-login" method="post" action="autenticar.php">
+                        <div class=" mb-3">
+                            <input type="email" class="form-control" id="correo" name="correo" placeholder="Correo" required>
                         </div>
                         <div class="mb-3">
                             <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Contraseña" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+                    </form>
                     </form>
                 </div>
             </div>
@@ -127,7 +147,6 @@ if ($conn->connect_error) {
                             <label for="rolUsuario" class="form-label">Rol</label>
                             <select class="form-control" id="rolUsuario" name="rolUsuario" required>
                                 <option value="3">Cliente</option>
-
                             </select>
                         </div>
                         <div class="mb-3">
@@ -135,7 +154,7 @@ if ($conn->connect_error) {
                             <input type="password" class="form-control" id="ContrasenaUsuario" name="contrasenaUsuario" required>
                         </div>
                         <div class="mb-3">
-                            <label for="ContrasenaUsuarioValidar" class="form-label">Validar Contrasena</label>
+                            <label for="ContrasenaUsuarioValidar" class="form-label">Validar Contraseña</label>
                             <input type="password" class="form-control" id="ContrasenaUsuarioValidar" name="contrasenaUsuarioValidar" required>
                         </div>
                     </form>
