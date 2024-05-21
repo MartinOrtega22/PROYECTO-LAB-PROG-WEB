@@ -50,8 +50,7 @@ if ($rcat->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de productos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/login.css">
 
@@ -64,9 +63,7 @@ if ($rcat->num_rows > 0) {
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -106,8 +103,7 @@ if ($rcat->num_rows > 0) {
                     }
                     ?>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -128,23 +124,18 @@ if ($rcat->num_rows > 0) {
         </div>
     </nav>
 
+    <input type="hidden" id="idUsuario" name="idUsuario" value="<?php echo isset($_SESSION['id']) ? $_SESSION['id'] : ''; ?>">
 
 
     <div class="container">
 
         <br>
         <h2 style="text-align: center">Catálogo de productos</h2>
-        <div class="input-group">
-            <span class="input-group-text" id="searchIcon">
-                <i class="bi bi-search"></i>
-            </span>
-            <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control"
-                placeholder="Buscar producto..." style="flex: 1;">
-        </div>
+        <input type="text">
+        <button type="button" class="btn btn-primary">Buscar</button>
 
         <!-- MODAL DETALLE -->
-        <div class="modal fade" id="detalleProductoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
+        <div class="modal fade" id="detalleProductoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -152,47 +143,47 @@ if ($rcat->num_rows > 0) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="formEditarProducto" action="accionphp/editarproducto.php" method="post"
-                            enctype="multipart/form-data">
+                        <form id="formEditarProducto" action="accionphp/agregarcarrito.php" method="post" enctype="multipart/form-data">
+                            <input type="hidden" id="idUsuario" name="idUsuario" value="<?php echo isset($_SESSION['id']) ? $_SESSION['id'] : ''; ?>">
                             <input type="hidden" id="editIdProducto" name="id">
+                            <input type="hidden" id="hiddenPrecioProducto" name="precioProducto"> <!-- Campo oculto para el precio -->
                             <div class="mb-3">
                                 <label for="editNombreProducto" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="editNombreProducto" name="nombreProducto"
-                                    required disabled>
+                                <input type="text" class="form-control" id="editNombreProducto" name="nombreProducto" required disabled>
                             </div>
                             <div class="mb-3">
                                 <label for="editDescripcionProducto" class="form-label">Descripción</label>
-                                <input type="text" class="form-control" id="editDescripcionProducto"
-                                    name="descripcionProducto" required disabled>
+                                <input type="text" class="form-control" id="editDescripcionProducto" name="descripcionProducto" required disabled>
                             </div>
                             <div class="mb-3">
                                 <label for="editPrecioProducto" class="form-label">Precio</label>
-                                <input type="number" class="form-control" id="editPrecioProducto" name="precioProducto"
-                                    required disabled>
+                                <input type="number" class="form-control" id="editPrecioProducto" name="precioProducto" required disabled>
                             </div>
                             <div class="mb-3">
                                 <label for="editCategoriaProducto" class="form-label">Categoría</label>
-                                <select class="form-control" id="editCategoriaProducto" name="categoriaProducto"
-                                    required disabled>
+                                <select class="form-control" id="editCategoriaProducto" name="categoriaProducto" required disabled>
                                     <option value="">Selecciona una categoría</option>
-                                    <?php foreach ($categorias as $categoria): ?>
-                                        <option value="<?php echo $categoria['IdCategoria']; ?>">
-                                            <?php echo $categoria['DescripcionCategoria']; ?></option>
+                                    <?php foreach ($categorias as $categoria) : ?>
+                                        <option value="<?php echo $categoria['IdCategoria']; ?>"><?php echo $categoria['DescripcionCategoria']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <!-- <label for="editImagenProducto" class="form-label">Imagen del Producto</label>
-                                <input type="file" class="form-control" id="editImagenProducto" name="imagenProducto"> -->
-                                <img id="editImagenPreview" class="col-12" src="" alt="Imagen del Producto"
-                                    style="display: none;">
+                                <img id="editImagenPreview" class="col-12" src="" alt="Imagen del Producto" style="display: none;">
+                            </div>
+                            <div class="mb-3">
+                                <label for="fechaAlta" class="form-label">Fecha</label>
+                                <input type="hidden" class="form-control" id="fechaAlta" name="fechaAlta" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="CantidadProducto" class="form-label">Cantidad</label>
+                                <input type="number" class="form-control" id="CantidadProducto" name="cantidadProducto" required>
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary" form="formEditarProducto">Agregar al
-                            carrito</button>
+                        <button type="submit" class="btn btn-primary" form="formEditarProducto">Guardar Cambios</button>
                     </div>
                 </div>
             </div>
@@ -233,13 +224,24 @@ if ($rcat->num_rows > 0) {
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function () {
+        function getCurrentDateTime() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
 
-            $('.editar-btn').click(function () {
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+        $('#fechaAlta').val(getCurrentDateTime());
+
+
+        $(document).ready(function() {
+
+            $('.editar-btn').click(function() {
                 var idProducto = $(this).data('id');
 
                 if (!idProducto) {
@@ -254,7 +256,7 @@ if ($rcat->num_rows > 0) {
                         idProducto: idProducto
                     },
                     dataType: 'json',
-                    success: function (data) {
+                    success: function(data) {
                         if (data.error) {
                             console.error('Error:', data.error);
                         } else {
@@ -262,6 +264,7 @@ if ($rcat->num_rows > 0) {
                             $('#editNombreProducto').val(data.NombreProducto);
                             $('#editDescripcionProducto').val(data.DescripcionProducto);
                             $('#editPrecioProducto').val(data.PrecioProducto);
+                            $('#hiddenPrecioProducto').val(data.PrecioProducto); // Actualizar el campo oculto
                             $('#editCategoriaProducto').val(data.CategoriaProducto);
 
                             if (data.ImagenProducto) {
@@ -271,7 +274,33 @@ if ($rcat->num_rows > 0) {
                             }
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
+                        console.error('Error en la solicitud AJAX:', status, error);
+                        console.error('Respuesta del servidor:', xhr.responseText);
+                    }
+                });
+            });
+            $('#formEditarProducto').submit(function(e) {
+                e.preventDefault();
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: 'accionphp/agregarcarrito.php',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message);
+                            location.reload();
+                        } else {
+                            alert('Error: ' + response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
                         console.error('Error en la solicitud AJAX:', status, error);
                         console.error('Respuesta del servidor:', xhr.responseText);
                     }

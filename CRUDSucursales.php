@@ -210,8 +210,7 @@ if ($resultUsuario->num_rows > 0) {
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="fechaAlta" class="form-label">Fecha</label>
-                                <input type="datetime-local" class="form-control" id="fechaAlta" name="fechaAlta" required>
+                                <input type="hidden" class="form-control" id="fechaAlta" name="fechaAlta" required>
                             </div>
                         </form>
                     </div>
