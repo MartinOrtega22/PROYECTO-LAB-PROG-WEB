@@ -135,182 +135,184 @@ if ($rcat->num_rows > 0) {
             <div class="col-md-12">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" id="product-search" placeholder="Buscar producto..."><br>
-        <section class="row mb-6">
+                    <section class="row mb-6">
 
-        <!-- MODAL DETALLE -->
-        <div class="modal fade" id="detalleProductoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Producto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="formEditarProducto" action="accionphp/agregarcarrito.php" method="post" enctype="multipart/form-data">
-                            <input type="hidden" id="idUsuario" name="idUsuario" value="<?php echo isset($_SESSION['id']) ? $_SESSION['id'] : ''; ?>">
-                            <input type="hidden" id="editIdProducto" name="id">
-                            <input type="hidden" id="hiddenPrecioProducto" name="precioProducto"> <!-- Campo oculto para el precio -->
-                            <div class="mb-3">
-                                <label for="editNombreProducto" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="editNombreProducto" name="nombreProducto" required disabled>
+                        <!-- MODAL DETALLE -->
+                        <div class="modal fade" id="detalleProductoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Producto</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="formEditarProducto" action="accionphp/agregarcarrito.php" method="post" enctype="multipart/form-data">
+                                            <input type="hidden" id="idUsuario" name="idUsuario" value="<?php echo isset($_SESSION['id']) ? $_SESSION['id'] : ''; ?>">
+                                            <input type="hidden" id="editIdProducto" name="id">
+                                            <input type="hidden" id="hiddenPrecioProducto" name="precioProducto"> <!-- Campo oculto para el precio -->
+                                            <div class="mb-3">
+                                                <label for="editNombreProducto" class="form-label">Nombre</label>
+                                                <input type="text" class="form-control" id="editNombreProducto" name="nombreProducto" required disabled>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editDescripcionProducto" class="form-label">Descripción</label>
+                                                <input type="text" class="form-control" id="editDescripcionProducto" name="descripcionProducto" required disabled>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editPrecioProducto" class="form-label">Precio</label>
+                                                <input type="number" class="form-control" id="editPrecioProducto" name="precioProducto" required disabled>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="editCategoriaProducto" class="form-label">Categoría</label>
+                                                <select class="form-control" id="editCategoriaProducto" name="categoriaProducto" required disabled>
+                                                    <option value="">Selecciona una categoría</option>
+                                                    <?php foreach ($categorias as $categoria) : ?>
+                                                        <option value="<?php echo $categoria['IdCategoria']; ?>"><?php echo $categoria['DescripcionCategoria']; ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <img id="editImagenPreview" class="col-12" src="" alt="Imagen del Producto" style="display: none;">
+                                            </div>
+                                            <div class="mb-3">
+                                                <input type="hidden" class="form-control" id="fechaAlta" name="fechaAlta" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="CantidadProducto" class="form-label">Cantidad</label>
+                                                <input type="number" class="form-control" id="CantidadProducto" name="cantidadProducto" required>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="btn btn-primary" form="formEditarProducto">Agregar al carrito</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="editDescripcionProducto" class="form-label">Descripción</label>
-                                <input type="text" class="form-control" id="editDescripcionProducto" name="descripcionProducto" required disabled>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editPrecioProducto" class="form-label">Precio</label>
-                                <input type="number" class="form-control" id="editPrecioProducto" name="precioProducto" required disabled>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editCategoriaProducto" class="form-label">Categoría</label>
-                                <select class="form-control" id="editCategoriaProducto" name="categoriaProducto" required disabled>
-                                    <option value="">Selecciona una categoría</option>
-                                    <?php foreach ($categorias as $categoria) : ?>
-                                        <option value="<?php echo $categoria['IdCategoria']; ?>"><?php echo $categoria['DescripcionCategoria']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <img id="editImagenPreview" class="col-12" src="" alt="Imagen del Producto" style="display: none;">
-                            </div>
-                            <div class="mb-3">
-                                <label for="fechaAlta" class="form-label">Fecha</label>
-                                <input type="hidden" class="form-control" id="fechaAlta" name="fechaAlta" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="CantidadProducto" class="form-label">Cantidad</label>
-                                <input type="number" class="form-control" id="CantidadProducto" name="cantidadProducto" required>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary" form="formEditarProducto">Agregar al carrito</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                        </div>
 
-        <?php
+                        <?php
 
 
-        // Consulta para obtener los productos
-        $consulta = "SELECT IdProducto, NombreProducto, DescripcionProducto, PrecioProducto, DescripcionCategoria, ImagenProducto FROM producto JOIN categorias WHERE CategoriaProducto=IdCategoria";
+                        // Consulta para obtener los productos
+                        $consulta = "SELECT IdProducto, NombreProducto, DescripcionProducto, PrecioProducto, DescripcionCategoria, ImagenProducto FROM producto JOIN categorias WHERE CategoriaProducto=IdCategoria";
 
-        $resultado = $conexion->query($consulta);
+                        $resultado = $conexion->query($consulta);
 
-        // Mostrar los productos
-        if ($resultado->num_rows > 0) {
-            echo '<div class="row row-cols-3">';
-            while ($row = $resultado->fetch_assoc()) {
-                echo '<div class="col mb-4 mt-4">';
-                echo '<div class="card">';
-                echo '<img src="data:image/jpeg;base64,' . base64_encode($row['ImagenProducto']) . '" class="card-img-top" alt="' . $row['NombreProducto'] . '">';
-                echo '<div class="card-body">';
-                echo '<h5 class="card-title">' . $row['NombreProducto'] . '</h5>';
-                echo '<p class="card-text">Codigo: ' . $row['IdProducto'] . '</p>';
-                echo '<p class="card-text">' . $row['DescripcionProducto'] . '</p>';
-                echo '<p class="card-text">Categoría: ' . $row['DescripcionCategoria'] . '</p>';
-                echo '<td><a href="#" class="btn btn-primary editar-btn" data-bs-toggle="modal" data-bs-target="#detalleProductoModal" data-id="' . $row["IdProducto"] . '">Ver detalle</i></a>';
-                echo '</div>';
-                echo '</div>';
-                echo '</div>';
-            }
-            echo '</div>';
-        } else {
-            echo '<p>No hay productos disponibles.</p>';
-        }
-
-        $conexion->close();
-        ?>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script>
-        function getCurrentDateTime() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-
-            return `${year}-${month}-${day}T${hours}:${minutes}`;
-        }
-        $('#fechaAlta').val(getCurrentDateTime());
-
-
-        $(document).ready(function() {
-
-            $('.editar-btn').click(function() {
-                var idProducto = $(this).data('id');
-
-                if (!idProducto) {
-                    console.error('ID de producto no proporcionado');
-                    return;
-                }
-
-                $.ajax({
-                    url: 'accionphp/obtenerproducto.php',
-                    type: 'GET',
-                    data: {
-                        idProducto: idProducto
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.error) {
-                            console.error('Error:', data.error);
-                        } else {
-                            $('#editIdProducto').val(data.IdProducto);
-                            $('#editNombreProducto').val(data.NombreProducto);
-                            $('#editDescripcionProducto').val(data.DescripcionProducto);
-                            $('#editPrecioProducto').val(data.PrecioProducto);
-                            $('#hiddenPrecioProducto').val(data.PrecioProducto); // Actualizar el campo oculto
-                            $('#editCategoriaProducto').val(data.CategoriaProducto);
-
-                            if (data.ImagenProducto) {
-                                $('#editImagenPreview').attr('src', 'data:image/jpeg;base64,' + data.ImagenProducto).show();
-                            } else {
-                                $('#editImagenPreview').hide();
+                        // Mostrar los productos
+                        if ($resultado->num_rows > 0) {
+                            echo '<div class="row row-cols-3">';
+                            while ($row = $resultado->fetch_assoc()) {
+                                echo '<div class="col mb-4 mt-4">';
+                                echo '<div class="card">';
+                                echo '<img src="data:image/jpeg;base64,' . base64_encode($row['ImagenProducto']) . '" class="card-img-top" alt="' . $row['NombreProducto'] . '">';
+                                echo '<div class="card-body">';
+                                echo '<h5 class="card-title">' . $row['NombreProducto'] . '     $' . $row['PrecioProducto'] . '</h5>';
+                                echo '<p class="card-text">Codigo: ' . $row['IdProducto'] . '</p>';
+                                echo '<p class="card-text"></p>';
+                                echo '<p class="card-text">' . $row['DescripcionProducto'] . '</p>';
+                                echo '<p class="card-text">Categoría: ' . $row['DescripcionCategoria'] . '</p>';
+                                if ($rol == 3) {
+                                    echo '<td><a href="#" class="btn btn-primary editar-btn" data-bs-toggle="modal" data-bs-target="#detalleProductoModal" data-id="' . $row["IdProducto"] . '">Ver detalle</i></a>';
+                                }
+                                echo '</div>';
+                                echo '</div>';
+                                echo '</div>';
                             }
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error en la solicitud AJAX:', status, error);
-                        console.error('Respuesta del servidor:', xhr.responseText);
-                    }
-                });
-            });
-            $('#formEditarProducto').submit(function(e) {
-                e.preventDefault();
-
-                var formData = new FormData(this);
-
-                $.ajax({
-                    url: 'accionphp/agregarcarrito.php',
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            alert(response.message);
-                            location.reload();
+                            echo '</div>';
                         } else {
-                            alert('Error: ' + response.message);
+                            echo '<p>No hay productos disponibles.</p>';
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error en la solicitud AJAX:', status, error);
-                        console.error('Respuesta del servidor:', xhr.responseText);
+
+                        $conexion->close();
+                        ?>
+                </div>
+
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+                <script>
+                    function getCurrentDateTime() {
+                        const now = new Date();
+                        const year = now.getFullYear();
+                        const month = String(now.getMonth() + 1).padStart(2, '0');
+                        const day = String(now.getDate()).padStart(2, '0');
+                        const hours = String(now.getHours()).padStart(2, '0');
+                        const minutes = String(now.getMinutes()).padStart(2, '0');
+
+                        return `${year}-${month}-${day}T${hours}:${minutes}`;
                     }
-                });
-            });
-        });
-    </script>
+                    $('#fechaAlta').val(getCurrentDateTime());
+
+
+                    $(document).ready(function() {
+
+                        $('.editar-btn').click(function() {
+                            var idProducto = $(this).data('id');
+
+                            if (!idProducto) {
+                                console.error('ID de producto no proporcionado');
+                                return;
+                            }
+
+                            $.ajax({
+                                url: 'accionphp/obtenerproducto.php',
+                                type: 'GET',
+                                data: {
+                                    idProducto: idProducto
+                                },
+                                dataType: 'json',
+                                success: function(data) {
+                                    if (data.error) {
+                                        console.error('Error:', data.error);
+                                    } else {
+                                        $('#editIdProducto').val(data.IdProducto);
+                                        $('#editNombreProducto').val(data.NombreProducto);
+                                        $('#editDescripcionProducto').val(data.DescripcionProducto);
+                                        $('#editPrecioProducto').val(data.PrecioProducto);
+                                        $('#hiddenPrecioProducto').val(data.PrecioProducto); // Actualizar el campo oculto
+                                        $('#editCategoriaProducto').val(data.CategoriaProducto);
+
+                                        if (data.ImagenProducto) {
+                                            $('#editImagenPreview').attr('src', 'data:image/jpeg;base64,' + data.ImagenProducto).show();
+                                        } else {
+                                            $('#editImagenPreview').hide();
+                                        }
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error en la solicitud AJAX:', status, error);
+                                    console.error('Respuesta del servidor:', xhr.responseText);
+                                }
+                            });
+                        });
+                        $('#formEditarProducto').submit(function(e) {
+                            e.preventDefault();
+
+                            var formData = new FormData(this);
+
+                            $.ajax({
+                                url: 'accionphp/agregarcarrito.php',
+                                type: 'POST',
+                                data: formData,
+                                contentType: false,
+                                processData: false,
+                                dataType: 'json',
+                                success: function(response) {
+                                    if (response.success) {
+                                        alert(response.message);
+                                        location.reload();
+                                    } else {
+                                        alert('Error: ' + response.message);
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error en la solicitud AJAX:', status, error);
+                                    console.error('Respuesta del servidor:', xhr.responseText);
+                                }
+                            });
+                        });
+                    });
+                </script>
 </body>
 
 </html>
