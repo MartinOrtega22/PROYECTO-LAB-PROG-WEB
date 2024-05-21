@@ -131,8 +131,11 @@ if ($rcat->num_rows > 0) {
 
         <br>
         <h2 style="text-align: center">Catálogo de productos</h2>
-        <input type="text">
-        <button type="button" class="btn btn-primary">Buscar</button>
+        <section class="row mb-3">
+            <div class="col-md-12">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="product-search" placeholder="Buscar producto..."><br>
+        <section class="row mb-6">
 
         <!-- MODAL DETALLE -->
         <div class="modal fade" id="detalleProductoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -183,7 +186,7 @@ if ($rcat->num_rows > 0) {
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary" form="formEditarProducto">Guardar Cambios</button>
+                        <button type="submit" class="btn btn-primary" form="formEditarProducto">Agregar al carrito</button>
                     </div>
                 </div>
             </div>
