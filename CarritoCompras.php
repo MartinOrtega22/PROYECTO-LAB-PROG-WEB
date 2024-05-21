@@ -123,22 +123,23 @@ if ($conexion->connect_error) {
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Producto</th>
-                    <th>Precio</th>
+                    <th>Id carrito</th>
+                    <th>Id usuario</th>
+                    <th>Id producto</th>
                     <th>Cantidad</th>
-                    <th>Subtotal</th>
+                    <th>Fecha</th>
+                    <th>Precio del producto</th>
                 </tr>
             </thead>
-            <tbody>
-            </tbody>
+            <tbody id="cuerpo-carrito"></tbody>
             <tfoot>
-                <tr>
-                    <th colspan="3">Subtotal</th>
-                    <td id="subtotal">0</td>
+            <tr>
+                    <th colspan="5">Subtotal</th>
+                    <td id="subtotal"></td>
                 </tr>
                 <tr>
-                    <th colspan="3">Total</th>
-                    <td id="total">0</td>
+                    <th colspan="5">Total</th>
+                    <td id="total"></td>
                 </tr>
             </tfoot>
         </table>
@@ -148,22 +149,20 @@ if ($conexion->connect_error) {
     </div>
     <?php
 
-    $sql = "SELECT IdProducto, NombreProducto, DescripcionProducto, PrecioProducto, ImagenProducto, Cantidad, IdVenta
-  FROM productos
-  INNER JOIN carrito ON IdProducto = IdProducto";
+    $sql = "SELECT IdCarrito, IdUsuario, IdProducto, Cantidad, Fecha, PrecioProducto
+  FROM carrito";
     $result = $db->query($sql);
 
     if ($result->num_rows > 0) {
         $productos = [];
         while ($row = $result->fetch_assoc()) {
             $producto = [
-                "id" => $row["IdProducto"],
-                "nombre" => $row["NombreProducto"],
-                "descripcion" => $row["DescripcionProducto"],
-                "precio" => $row["PrecioProducto"],
-                "imagen" => $row["ImagenProducto"],
+                "idCarrito" => $row["IdCarrito"],
+                "idUsuario" => $row["IdUsuario"],
+                "idProducto" => $row["IdProducto"],
                 "cantidad" => $row["Cantidad"],
-                "idVenta" => $row["IdVenta"]
+                "fecha" => $row["Fecha"],
+                "precioProducto" => $row["PrecioProducto"]
             ];
             $productos[] = $producto;
         }
