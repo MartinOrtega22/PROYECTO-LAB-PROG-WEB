@@ -38,6 +38,9 @@ if ($resultUsuario->num_rows > 0) {
         $Usuario[] = $row;
     }
 }
+
+$idUsuarioLogueado = $_SESSION['id']; // Asegúrate de que esta variable esté correctamente configurada al autenticar el usuario
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -136,7 +139,8 @@ if ($resultUsuario->num_rows > 0) {
                 $sql = "SELECT c.IdCarrito, u.NombreUsuario, p.NombreProducto, c.Cantidad, c.Fecha, c.PrecioProducto, (c.Cantidad * c.PrecioProducto) AS TotalProducto 
                         FROM carrito c 
                         JOIN usuario u ON c.IdUsuario = u.IdUsuario 
-                        JOIN producto p ON c.IdProducto = p.IdProducto";
+                        JOIN producto p ON c.IdProducto = p.IdProducto
+                        WHERE c.IdUsuario = $idUsuarioLogueado";
                 $result = $conn->query($sql);
 
                 $sumaTotal = 0;
@@ -162,14 +166,36 @@ if ($resultUsuario->num_rows > 0) {
                 ?>
             </tbody>
         </table>
-        <div class="text-end">
+        <div class="text-end mt-3">
             <strong>Total:</strong> <span id="totalSuma"><?php echo number_format($sumaTotal, 2); ?></span>
+            <button id="btnGenerarVenta" class="btn btn-success">Generar Venta</button>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="js/CRUDCarrito.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#btnGenerarVenta').on('click', function() {
+                $.ajax({
+                    url: 'accionphp/generarventa.php',
+                    method: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            alert(response.message);
+                            location.reload(); // Recargar la página para reflejar los cambios
+                        } else {
+                            alert(response.message);
+                        }
+                    },
+                    error: function() {
+                        alert('Error al procesar la solicitud');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -117,23 +117,14 @@ if ($resultUsuario->num_rows > 0) {
     </nav>
 
     <div class="container">
-        <h2>Lista de Detalle Venta</h2>
-        <div class="d-flex justify-content-between align-items-center">
-            <div class="input-group">
-                <span class="input-group-text" id="searchIcon">
-                    <i class="bi bi-search"></i>
-                </span>
-                <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control" placeholder="Buscar..." style="flex: 1;">
-            </div>
-            <button type="button" class="btn btn-primary m-2" id="btnAgregar" data-bs-toggle="modal" data-bs-target="#agregarDetalleVentaModal">Agregar</button>
-        </div>
-
+        <h2>Historial de mis compras</h2>
+    
         <!-- Modal Editar -->
         <div class="modal fade" id="editarDetalleVentaModal" tabindex="-1" aria-labelledby="editarDetalleVentaModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editarDetalleVentaModalLabel">Editar Detalle Venta</h5>
+                        <h5 class="modal-title" id="editarDetalleVentaModalLabel">Editar detalle de venta</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -215,9 +206,9 @@ if ($resultUsuario->num_rows > 0) {
                     <th>ID Venta</th>
                     <th>Producto</th>
                     <th>Cantidad</th>
-                    <th>Subtotal Venta</th>
                     <th>Precio Producto</th>
-                    <th>Acciones</th>
+                    <th>Subtotal Venta</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -233,10 +224,8 @@ if ($resultUsuario->num_rows > 0) {
                         echo "<td>" . $row["IdVenta"] . "</td>";
                         echo "<td>" . $row["NombreProducto"] . "</td>";
                         echo "<td>" . $row["Cantidad"] . "</td>";
-                        echo "<td>" . $row["SubtotalVenta"] . "</td>";
                         echo "<td>" . $row["PrecioProducto"] . "</td>";
-                        echo '<td><a href="#" class="btn btn-primary editar-btn" data-bs-toggle="modal" data-bs-target="#editarDetalleVentaModal" data-id="' . $row["IdProducto"] . '"><i class="bi bi-pencil"></i></a>';
-                        echo '<button data-id="' . $row["IdProducto"] . '" class="btn btn-danger eliminar-btn"><i class="bi bi-trash"></i></button></td>';
+                        echo "<td>" . $row["SubtotalVenta"] . "</td>";
                         echo "</tr>";
                     }
                 } else {
