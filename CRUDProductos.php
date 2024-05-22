@@ -73,10 +73,10 @@ if ($resultCategorias->num_rows > 0) {
                     if ($rolNombre == "Usuario sin cuenta" || $rol == "3" || $rol == "2" || $rol == "1") {
                         echo '<li class="nav-item"><a class="nav-link active" aria-current="page" href="Index.php" id="M1">Inicio</a></li>';
                     }
-                    if ($rol == "1") {
+                    if ($rol == "1" || $rol == "2") {
                         echo '<li class="nav-item"><a class="nav-link" href="CRUDSucursales.php" id="M2">Administrar Sucursales</a></li>';
                     }
-                    if ($rol == "1" || $rol == "2") {
+                    if ($rol == "1") {
                         echo '<li class="nav-item"><a class="nav-link" href="CRUDProductos.php" id="M3">Administrar Productos</a></li>';
                     }
                     if ($rol == "1") {
@@ -93,11 +93,11 @@ if ($resultCategorias->num_rows > 0) {
                     }
                     if ($rolNombre == "Usuario sin cuenta" || $rol == "3" || $rol == "2" || $rol == "1") {
                         echo '<li class="nav-item"><a class="nav-link" href="CatalogoProductos.php" id="M8">Catálogo Productos</a></li>';
-                        echo '<li class="nav-item"><a class="nav-link" href="#" id="M9">Nosotros</a></li>';
+                        echo '<li class="nav-item"><a class="nav-link" href="Nosotros.php" id="M9">Nosotros</a></li>';
                         echo '<li class="nav-item"><a class="nav-link" href="Sucursales.php" id="M10"><i class="bi bi-geo-alt"></i></a></li>';
                     }
                     if ($rol == "3") {
-                        echo '<li class="nav-item"><a class="nav-link" href="#" id="M11"><i class="bi bi-cart4"></i></a></li>';
+                        echo '<li class="nav-item"><a class="nav-link" href="CarritoCompras.php" id="M11"><i class="bi bi-cart4"></i></a></li>';
                     }
                     ?>
                     <li class="nav-item dropdown">
@@ -110,7 +110,6 @@ if ($resultCategorias->num_rows > 0) {
                                 echo '<li><a class="dropdown-item" href="Login.php" id="M12">Iniciar Sesion</a></li>';
                             }
                             if ($rol == "3" || $rol == "2" || $rol == "1") {
-                                echo '<li><a class="dropdown-item" href="#" id="M13">Cambiar Contraseña</a></li>';
                                 echo '<li><hr class="dropdown-divider"></li>';
                                 echo '<li><a class="dropdown-item" href="accionphp/logout.php" id="M14">Cerrar Sesion</a></li>';
                             }

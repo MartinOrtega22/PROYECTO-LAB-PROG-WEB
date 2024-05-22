@@ -58,12 +58,11 @@ if ($resultEstatus->num_rows > 0) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/login.css">
-
     <link rel="stylesheet" href="css/CRUDSucursales.css">
 </head>
 
 <body>
-    <!-- MENU -->
+    <!-- Menu -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Navbar</a>
@@ -99,11 +98,11 @@ if ($resultEstatus->num_rows > 0) {
                     }
                     if ($rolNombre == "Usuario sin cuenta" || $rol == "3" || $rol == "2" || $rol == "1") {
                         echo '<li class="nav-item"><a class="nav-link" href="CatalogoProductos.php" id="M8">Catálogo Productos</a></li>';
-                        echo '<li class="nav-item"><a class="nav-link" href="#" id="M9">Nosotros</a></li>';
+                        echo '<li class="nav-item"><a class="nav-link" href="Nosotros.php" id="M9">Nosotros</a></li>';
                         echo '<li class="nav-item"><a class="nav-link" href="Sucursales.php" id="M10"><i class="bi bi-geo-alt"></i></a></li>';
                     }
                     if ($rol == "3") {
-                        echo '<li class="nav-item"><a class="nav-link" href="#" id="M11"><i class="bi bi-cart4"></i></a></li>';
+                        echo '<li class="nav-item"><a class="nav-link" href="CarritoCompras.php" id="M11"><i class="bi bi-cart4"></i></a></li>';
                     }
                     ?>
                     <li class="nav-item dropdown">
@@ -116,7 +115,6 @@ if ($resultEstatus->num_rows > 0) {
                                 echo '<li><a class="dropdown-item" href="Login.php" id="M12">Iniciar Sesion</a></li>';
                             }
                             if ($rol == "3" || $rol == "2" || $rol == "1") {
-                                echo '<li><a class="dropdown-item" href="#" id="M13">Cambiar Contraseña</a></li>';
                                 echo '<li><hr class="dropdown-divider"></li>';
                                 echo '<li><a class="dropdown-item" href="accionphp/logout.php" id="M14">Cerrar Sesion</a></li>';
                             }
@@ -127,16 +125,15 @@ if ($resultEstatus->num_rows > 0) {
             </div>
         </div>
     </nav>
+    <div class="container mt-4">
+        <h2>Reporte Ventas</h2>
 
-    <div class="container">
-        <h2>Reporte de Ventas</h2>
         <section class="row mb-6">
             <div class="col-md-6">
                 <div class="input-group mb-6">
                     <span class="input-group-text mb-2" id="searchIcon">
                         <i class="bi bi-search"></i>
                     </span>
-                    <!-- <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control" placeholder="Buscar..." style="flex: 1;"> -->
                     <input type="date" class="form-control form-control-sm mb-2" id="fecha-inicio" name="fecha-inicio">
                     <input type="date" class="form-control form-control-sm mb-2" id="fecha-fin" name="fecha-fin">
                     <button class="btn btn-primary m-2" type="button" id="search-button">Buscar</button>
@@ -144,7 +141,7 @@ if ($resultEstatus->num_rows > 0) {
             </div>
         </section>
 
-        <!-- Modal Editar -->
+        <!-- Modal Editar Venta -->
         <div class="modal fade" id="editarVentaModal" tabindex="-1" aria-labelledby="editarVentaModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -153,85 +150,21 @@ if ($resultEstatus->num_rows > 0) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="formEditarVenta" action="accionphp/editarventa.php" method="post" enctype="multipart/form-data">
-                            <input type="hidden" id="editIdVenta" name="id">
-                            <div class="mb-3">
-                                <label for="editFechaVenta" class="form-label">Fecha</label>
-                                <input type="datetime-local" class="form-control" id="editFechaVenta" name="fechaVenta" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editEstatusVenta" class="form-label">Estatus</label>
-                                <select class="form-control" id="editEstatusVenta" name="estatusVenta" required>
-                                    <option value="">Selecciona el Estatus</option>
-                                    <?php foreach ($Estatus as $e) : ?>
-                                        <option value="<?php echo $e['IdEstatus']; ?>"><?php echo $e['NombreEstatus']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editTotalVenta" class="form-label">Total</label>
-                                <input type="number" class="form-control" id="editTotalVenta" name="totalVenta" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="editUsuario" class="form-label">Usuario</label>
-                                <select class="form-control" id="editUsuario" name="Usuario" required>
-                                    <option value="">Selecciona el Usuario</option>
-                                    <?php foreach ($Usuario as $r) : ?>
-                                        <option value="<?php echo $r['IdUsuario']; ?>"><?php echo $r['NombreUsuario']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
+                        <input type="hidden" id="editIdVenta" name="id">
+                        <div class="mb-3">
+                            <label for="editEstatusVenta" class="form-label">Estatus</label>
+                            <select class="form-control" id="editEstatusVenta" name="estatusVenta" required>
+                                <option value="">Selecciona el Estatus</option>
+                                <?php foreach ($Estatus as $e) : ?>
+                                    <option value="<?php echo $e['IdEstatus']; ?>"><?php echo $e['DescripcionEstatus']; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary" form="formEditarVenta">Guardar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal Agregar -->
-        <div class="modal fade" id="agregarVentaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Agregar Venta</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="formAgregarVenta" action="accionphp/agregarventa.php" method="post" enctype="multipart/form-data">
-                            <div class="mb-3">
-                                <label for="fechaVenta" class="form-label">Fecha</label>
-                                <input type="datetime-local" class="form-control" id="fechaVenta" name="fechaVenta" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="estatusVenta" class="form-label">Estatus</label>
-                                <select class="form-control" id="estatusVenta" name="estatusVenta" required>
-                                    <option value="">Selecciona el Estatus</option>
-                                    <?php foreach ($Estatus as $e) : ?>
-                                        <option value="<?php echo $e['IdEstatus']; ?>"><?php echo $e['NombreEstatus']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="totalVenta" class="form-label">Total</label>
-                                <input type="number" class="form-control" id="totalVenta" name="totalVenta" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="Usuario" class="form-label">Usuario</label>
-                                <select class="form-control" id="Usuario" name="Usuario" required>
-                                    <option value="">Selecciona el Usuario</option>
-                                    <?php foreach ($Usuario as $r) : ?>
-                                        <option value="<?php echo $r['IdUsuario']; ?>"><?php echo $r['NombreUsuario']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary" form="formAgregarVenta">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -264,7 +197,7 @@ if ($resultEstatus->num_rows > 0) {
                         echo "<td>" . $row["DescripcionEstatus"] . "</td>";
                         echo "<td>" . $row["TotalVenta"] . "</td>";
                         echo "<td>" . $row["NombreUsuario"] . "</td>";
-                        echo '<td><a href="#" class="btn btn-primary editar-btn" data-bs-toggle="modal" data-bs-target="#editarVentaModal" data-id="' . $row["IdVenta"] . '"><i class="bi bi-pencil"></i></a>';
+                        echo '<td><a href="#" class="btn btn-primary editar-btn" data-bs-toggle="modal" data-bs-target="#editarVentaModal" data-id="' . $row["IdVenta"] . '" data-estatus="' . $row["EstatusVenta"] . '"><i class="bi bi-pencil"></i></a>';
                         echo '</td>';
                         echo "</tr>";
                     }
@@ -286,18 +219,73 @@ if ($resultEstatus->num_rows > 0) {
     <script>
         $(document).ready(function() {
             calcularSumaTotal();
+
+            $('#search-button').on('click', function() {
+                var fechaInicio = $('#fecha-inicio').val();
+                var fechaFin = $('#fecha-fin').val();
+                filtrarPorFechas(fechaInicio, fechaFin);
+                calcularSumaTotal();
+            });
+
+            $('.editar-btn').on('click', function() {
+                var id = $(this).data('id');
+                var estatus = $(this).data('estatus');
+                $('#editIdVenta').val(id);
+                $('#editEstatusVenta').val(estatus);
+            });
+
+            $('#formEditarVenta').on('submit', function(e) {
+                e.preventDefault();
+
+                var idVenta = $('#editIdVenta').val();
+                var estatusVenta = $('#editEstatusVenta').val();
+
+                $.ajax({
+                    url: 'editarEstatus.php',
+                    type: 'POST',
+                    data: {
+                        id: idVenta,
+                        estatusVenta: estatusVenta
+                    },
+                    success: function(response) {
+                        alert(response);
+                        // Actualizar la fila correspondiente en la tabla
+                        var row = $('a[data-id="' + idVenta + '"]').closest('tr');
+                        row.find('td:eq(2)').text($('#editEstatusVenta option:selected').text());
+                        $('#editarVentaModal').modal('hide');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        alert('Error al actualizar el estatus');
+                    }
+                });
+            });
         });
 
-        // Función para calcular la suma de la columna "Total"
         function calcularSumaTotal() {
             var suma = 0;
-            $('#dataTable tbody tr').each(function() {
+            $('#dataTable tbody tr:visible').each(function() {
                 var total = parseFloat($(this).find('td:eq(3)').text());
                 if (!isNaN(total)) {
                     suma += total;
                 }
             });
             $('#totalSuma').text(suma.toFixed(2)); // Mostrar la suma con dos decimales
+        }
+
+        function filtrarPorFechas(fechaInicio, fechaFin) {
+            $('#dataTable tbody tr').each(function() {
+                var fechaVenta = $(this).find('td:eq(1)').text();
+                if (fechaInicio && fechaFin) {
+                    if (fechaVenta >= fechaInicio && fechaVenta <= fechaFin) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                } else {
+                    $(this).show();
+                }
+            });
         }
     </script>
 </body>

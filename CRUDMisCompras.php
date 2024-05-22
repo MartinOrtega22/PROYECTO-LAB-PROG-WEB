@@ -2,10 +2,8 @@
 session_start();
 
 if (!isset($_SESSION['correo'])) {
-
     $_SESSION['rol'] = "0";
 }
-
 
 $roles = [
     "0" => "Usuario sin cuenta",
@@ -16,20 +14,30 @@ $roles = [
 
 $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : "0"; // Asignar rol de "Usuario sin cuenta"
 
-
-// Configuración de la conexión a la base de datos
+// Variables base de datos
 $host = "localhost";
 $usuario = "root";
 $contra = "12345678";
 $bd = "farmacia";
 
 // Conexión
-$conexion = new mysqli($host, $usuario, $contra, $bd);
+$conn = new mysqli($host, $usuario, $contra, $bd);
 
-// VerificA conexión
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
+// Verificar conexión
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
 }
+
+$sqlUsuario = "SELECT IdUsuario, NombreUsuario FROM Usuario";
+$resultUsuario = $conn->query($sqlUsuario);
+
+$Usuario = [];
+if ($resultUsuario->num_rows > 0) {
+    while ($row = $resultUsuario->fetch_assoc()) {
+        $Usuario[] = $row;
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,21 +45,18 @@ if ($conexion->connect_error) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis compras</title>
-    <link rel="stylesheet" href="css/CRUDMisCompras.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Detalle Venta</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
-
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/CRUDSucursales.css">
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -83,16 +88,15 @@ if ($conexion->connect_error) {
                     }
                     if ($rolNombre == "Usuario sin cuenta" || $rol == "3" || $rol == "2" || $rol == "1") {
                         echo '<li class="nav-item"><a class="nav-link" href="CatalogoProductos.php" id="M8">Catálogo Productos</a></li>';
-                        echo '<li class="nav-item"><a class="nav-link" href="#" id="M9">Nosotros</a></li>';
+                        echo '<li class="nav-item"><a class="nav-link" href="Nosotros.php" id="M9">Nosotros</a></li>';
                         echo '<li class="nav-item"><a class="nav-link" href="Sucursales.php" id="M10"><i class="bi bi-geo-alt"></i></a></li>';
                     }
                     if ($rol == "3") {
-                        echo '<li class="nav-item"><a class="nav-link" href="#" id="M11"><i class="bi bi-cart4"></i></a></li>';
+                        echo '<li class="nav-item"><a class="nav-link" href="CarritoCompras.php" id="M11"><i class="bi bi-cart4"></i></a></li>';
                     }
                     ?>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-person-circle"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -101,7 +105,6 @@ if ($conexion->connect_error) {
                                 echo '<li><a class="dropdown-item" href="Login.php" id="M12">Iniciar Sesion</a></li>';
                             }
                             if ($rol == "3" || $rol == "2" || $rol == "1") {
-                                echo '<li><a class="dropdown-item" href="#" id="M13">Cambiar Contraseña</a></li>';
                                 echo '<li><hr class="dropdown-divider"></li>';
                                 echo '<li><a class="dropdown-item" href="accionphp/logout.php" id="M14">Cerrar Sesion</a></li>';
                             }
@@ -113,101 +116,142 @@ if ($conexion->connect_error) {
         </div>
     </nav>
 
-
     <div class="container">
+        <h2>Lista de Detalle Venta</h2>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="input-group">
+                <span class="input-group-text" id="searchIcon">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control" placeholder="Buscar..." style="flex: 1;">
+            </div>
+            <button type="button" class="btn btn-primary m-2" id="btnAgregar" data-bs-toggle="modal" data-bs-target="#agregarDetalleVentaModal">Agregar</button>
+        </div>
 
-
-        <h2>Mis compras</h2>
-        <section class="row mb-6">
-            <div class="col-md-6">
-                <div class="input-group mb-6">
-                    <span class="input-group-text" id="searchIcon">
-                        <i class="bi bi-search"></i>
-                    </span>
-                    <input type="text" id="searchInput" onkeyup="searchTable()" class="form-control"
-                        placeholder="Buscar..." style="flex: 1;">
-                    <input type="date" class="form-control form-control-sm" id="fecha-inicio" name="fecha-inicio">
-                    <input type="date" class="form-control form-control-sm" id="fecha-fin" name="fecha-fin">
-                    <button class="btn btn-primary" type="button" id="search-button">Buscar</button>
+        <!-- Modal Editar -->
+        <div class="modal fade" id="editarDetalleVentaModal" tabindex="-1" aria-labelledby="editarDetalleVentaModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editarDetalleVentaModalLabel">Editar Detalle Venta</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formEditarDetalleVenta" action="accionphp/editardetalleventa.php" method="post" enctype="multipart/form-data">
+                            <input type="hidden" id="editIdDetalleVenta" name="id">
+                            <div class="mb-3">
+                                <label for="editIdProducto" class="form-label">ID Producto</label>
+                                <input type="text" class="form-control" id="editIdProducto" name="idProducto" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editCantidad" class="form-label">Cantidad</label>
+                                <input type="number" class="form-control" id="editCantidad" name="cantidad" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editSubtotalVenta" class="form-label">Subtotal Venta</label>
+                                <input type="number" class="form-control" id="editSubtotalVenta" name="subtotalVenta" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editPrecioProducto" class="form-label">Precio Producto</label>
+                                <input type="number" class="form-control" id="editPrecioProducto" name="precioProducto" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editIdVenta" class="form-label">ID Venta</label>
+                                <input type="text" class="form-control" id="editIdVenta" name="idVenta" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" form="formEditarDetalleVenta">Guardar</button>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <table class="table">
-            <tr>
-                <th>N° de pedido</th>
-                <th>Fecha</th>
-                <th>Productos</th>
-                <th>Dirección de envío</th>
-                <th>Estatus</th>
-                <th>Precio total del pedido</th>
-            </tr>
-            <?php
-            // Si se hace clic en el botón Buscar, obtener los pedidos con los filtros
-            if (isset($_GET['product-search']) && isset($_GET['fecha-inicio']) && isset($_GET['fecha-fin'])) {
-                $productoBusqueda = $_GET['product-search'];
-                $fechaInicio = $_GET['fecha-inicio'];
-                $fechaFin = $_GET['fecha-fin'];
+        <!-- Modal Agregar -->
+        <div class="modal fade" id="agregarDetalleVentaModal" tabindex="-1" aria-labelledby="agregarDetalleVentaModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="agregarDetalleVentaModalLabel">Agregar Detalle Venta</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="formAgregarDetalleVenta" action="accionphp/agregardetalleventa.php" method="post" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="idProducto" class="form-label">ID Producto</label>
+                                <input type="text" class="form-control" id="idProducto" name="idProducto" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="cantidad" class="form-label">Cantidad</label>
+                                <input type="number" class="form-control" id="cantidad" name="cantidad" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="subtotalVenta" class="form-label">Subtotal Venta</label>
+                                <input type="number" class="form-control" id="subtotalVenta" name="subtotalVenta" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="precioProducto" class="form-label">Precio Producto</label>
+                                <input type="number" class="form-control" id="precioProducto" name="precioProducto" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="idVenta" class="form-label">ID Venta</label>
+                                <input type="text" class="form-control" id="idVenta" name="idVenta" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" form="formAgregarDetalleVenta">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                // Consultar SQL para obtener pedidos con los filtros
-                $sql = "SELECT * FROM venta 
-                        JOIN usuario ON venta.IdUsuario = usuario.IdUsuario
-                        JOIN sucursal ON venta.IdSucursal = sucursal.IdSucursal
-                        JOIN estatusventa ON venta.IdEstatusVenta = estatusventa.IdEstatus
-                        WHERE venta.FechaVenta";
+        <table class="table" id="dataTable">
+            <thead>
+                <tr>
+                    <th>ID Venta</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal Venta</th>
+                    <th>Precio Producto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $sql = "SELECT p.NombreProducto, dv.Cantidad, dv.SubtotalVenta, dv.PrecioProducto, dv.IdVenta, dv.IdProducto
+        FROM detalleventa dv
+        JOIN producto p ON dv.IdProducto = p.IdProducto";
+                $result = $conn->query($sql);
 
-                $sql = "SELECT * FROM venta 
-            JOIN usuario ON venta.IdUsuario = usuario.IdUsuario
-            JOIN sucursal ON venta.IdSucursal = sucursal.IdSucursal
-            JOIN estatusventa ON venta.IdEstatusVenta = estatusventa.IdEstatus
-            WHERE venta.FechaVenta BETWEEN '$fechaInicio' AND '$fechaFin'";
-            } else {
-                $sql = "SELECT * FROM venta 
-            JOIN usuario ON venta.IdUsuario = usuario.IdUsuario
-            JOIN sucursal ON venta.IdSucursal = sucursal.IdSucursal
-            JOIN estatusventa ON venta.IdEstatusVenta = estatusventa.IdEstatus";
-            }
-
-            $result = $db->query($sql);
-
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    $idVenta = $row['IdVenta'];
-                    $fechaVenta = $row['FechaVenta'];
-                    $subtotalVenta = $row['#SubtotalVenta'];
-                    $totalVenta = $row['#TotalVenta'];
-                    $idUsuario = $row['IdUsuario'];
-                    $nombreUsuario = $row['NombreUsuario'];
-                    $idSucursal = $row['IdSucursal'];
-                    $nombreSucursal = $row['Nombre Sucursal'];
-                    $descripcionEstatus = $row['Descripcion Estatus'];
-
-                    echo "<tr>";
-                    echo "<td>$idVenta</td>";
-                    echo "<td>$fechaVenta</td>";
-                    echo "<td>$$subtotalVenta</td>";
-                    echo "<td>$$totalVenta</td>";
-                    echo "<td>$idUsuario</td>";
-                    echo "<td>$nombreUsuario</td>";
-                    echo "<td>$idSucursal</td>";
-                    echo "<td>$nombreSucursal</td>";
-                    echo "<td>$descripcionEstatus</td>";
-                    echo "</tr>";
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["IdVenta"] . "</td>";
+                        echo "<td>" . $row["NombreProducto"] . "</td>";
+                        echo "<td>" . $row["Cantidad"] . "</td>";
+                        echo "<td>" . $row["SubtotalVenta"] . "</td>";
+                        echo "<td>" . $row["PrecioProducto"] . "</td>";
+                        echo '<td><a href="#" class="btn btn-primary editar-btn" data-bs-toggle="modal" data-bs-target="#editarDetalleVentaModal" data-id="' . $row["IdProducto"] . '"><i class="bi bi-pencil"></i></a>';
+                        echo '<button data-id="' . $row["IdProducto"] . '" class="btn btn-danger eliminar-btn"><i class="bi bi-trash"></i></button></td>';
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='6'>No se encontraron resultados</td></tr>";
                 }
-            } else {
-                echo "<tr><td colspan='9'>No se encontraron pedidos</td></tr>";
-            }
+                $conn->close();
+                ?>
 
-            $db->close();
-            ?>
+            </tbody>
         </table>
-
-
-
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="js/CRUDDetalleVenta.js"></script>
 </body>
 
 </html>

@@ -2,8 +2,10 @@
 session_start();
 
 if (!isset($_SESSION['correo'])) {
+
     $_SESSION['rol'] = "0";
 }
+
 
 $roles = [
     "0" => "Usuario sin cuenta",
@@ -14,42 +16,19 @@ $roles = [
 
 $rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : "0"; // Asignar rol de "Usuario sin cuenta"
 
-// Variables base de datos
-$host = "localhost";
-$usuario = "root";
-$contra = "12345678";
-$bd = "farmacia";
-
-// Conexión
-$conn = new mysqli($host, $usuario, $contra, $bd);
-
-// Verificar conexión
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
-}
-
-// Obtener información de usuarios
-$sqlUsuario = "SELECT IdUsuario, NombreUsuario FROM Usuario";
-$resultUsuario = $conn->query($sqlUsuario);
-
-$Usuario = [];
-if ($resultUsuario->num_rows > 0) {
-    while ($row = $resultUsuario->fetch_assoc()) {
-        $Usuario[] = $row;
-    }
-}
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carrito</title>
+    <title>Nosotros</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/NosotrosS.css">
     <link rel="stylesheet" href="css/login.css">
-    <link rel="stylesheet" href="css/CRUDSucursales.css">
 </head>
 
 <body>
@@ -117,59 +96,83 @@ if ($resultUsuario->num_rows > 0) {
     </nav>
 
     <div class="container">
-        <h2>Carrito</h2>
-        <table class="table" id="dataTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Usuario</th>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Fecha</th>
-                    <th>Precio Producto</th>
-                    <th>Total</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $sql = "SELECT c.IdCarrito, u.NombreUsuario, p.NombreProducto, c.Cantidad, c.Fecha, c.PrecioProducto, (c.Cantidad * c.PrecioProducto) AS TotalProducto 
-                        FROM carrito c 
-                        JOIN usuario u ON c.IdUsuario = u.IdUsuario 
-                        JOIN producto p ON c.IdProducto = p.IdProducto";
-                $result = $conn->query($sql);
 
-                $sumaTotal = 0;
+        <h1 class="encabezado-nosotros">Nosotros</h1>
 
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $row["IdCarrito"] . "</td>";
-                        echo "<td>" . $row["NombreUsuario"] . "</td>";
-                        echo "<td>" . $row["NombreProducto"] . "</td>";
-                        echo "<td>" . $row["Cantidad"] . "</td>";
-                        echo "<td>" . $row["Fecha"] . "</td>";
-                        echo "<td>" . $row["PrecioProducto"] . "</td>";
-                        echo "<td>" . $row["TotalProducto"] . "</td>";
-                        echo '<td><button data-id="' . $row["IdCarrito"] . '" class="btn btn-danger eliminar-btn"><i class="bi bi-trash"></i></button></td>';
-                        echo "</tr>";
-                        $sumaTotal += $row["TotalProducto"];
-                    }
-                } else {
-                    echo "<tr><td colspan='8'>No se encontraron resultados</td></tr>";
-                }
-                $conn->close();
-                ?>
-            </tbody>
-        </table>
-        <div class="text-end">
-            <strong>Total:</strong> <span id="totalSuma"><?php echo number_format($sumaTotal, 2); ?></span>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 p-3 d-flex justify-content-center align-items-center">
+                    <div class="info-left">
+                        <h3 class="titulocards">Servicios que Ofrecemos</h3>
+                        <p class="textcards">
+                            <strong>Dispensación de Medicamentos:</strong> Proveemos una amplia gama de medicamentos
+                            recetados y de venta libre.
+                        </p>
+                        <p class="textcards">
+                            <strong>Productos de Salud y Bienestar: </strong> Ofrecemos una variedad de productos para el
+                            cuidado personal, suplementos nutricionales, productos de bebés y equipos médicos.
+                            Todos nuestros productos son seleccionados con cuidado para asegurar su calidad y eficacia.
+                        </p>
+                        <p class="textcards">
+                            <strong>Entrega a Domicilio:</strong> Para tu comodidad, ofrecemos un servicio de entrega a
+                            domicilio rápido y confiable.
+                            Entendemos que en ocasiones no puedes salir de casa, por lo que llevamos tus medicamentos y
+                            productos de salud directamente a tu puerta.
+                        </p>
+                        <p class="textcards">Email: farmaciamisalud@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 info-center p-3 infomedio">
+                    <br> <br> <br> <br>
+                    <h3 class="titulocards">Nuestra Historia:</h3>
+                    <p class="textcards">
+                        En Farmacia Mi Salud, nos enorgullecemos de ser una farmacia local comprometida con la salud y el
+                        bienestar de nuestra comunidad.
+                        Fundada recién en el 2024, hemos estado contentos de servir a nuestros clientes con mucha dedicación
+                        y profesionalismo.
+                        <br> <br>
+                    </p>
+                    <p class="textcards">
+                        Nuestra visión es aspirar a ser la farmacia líder en nuestra comunidad, reconocida por nuestro
+                        compromiso con la excelencia,
+                        la innovación y el servicio al cliente. Nos esforzamos por crear un entorno donde cada cliente se
+                        sienta valorado y cuidado.
+                        <br> <br>
+                    </p>
+                    <p class="textcards">
+                        Nuestra misión es proporcionar medicamentos y productos de salud de la más alta calidad, ofreciendo
+                        un servicio excepcional y personalizado a cada uno de nuestros clientes.
+                        Nos esforzamos por ser el primer recurso de salud para nuestra comunidad, ofreciendo asesoramiento
+                        experto y atención farmacéutica de confianza.
+                        <br> <br>
+                    </p>
+                    <p class="textcards">
+                        Nos mantenemos actualizados con las últimas tecnologías y avances en el campo de la farmacia para
+                        ofrecerte los mejores servicios y productos.
+                        Implementamos sistemas modernos de gestión de medicamentos y adopción de nuevas prácticas para
+                        mejorar la eficiencia y seguridad de nuestro servicio.
+                        <br> <br>
+                    </p>
+                </div>
+
+                <div class="col-md-3 info-right p-3">
+                    <img src="./img/imagenfarmacia.jpg" alt="Imagen de Producto 1">
+                    <img src="img/imagenfarmacia2.jpg" alt="Imagen de Producto 2">
+                    <img src="img/imagenfarmacia3.jpg" alt="Imagen de Producto 3">
+                </div>
+
+            </div>
         </div>
     </div>
+    </div>
+    </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="js/CRUDCarrito.js"></script>
 </body>
 
 </html>
